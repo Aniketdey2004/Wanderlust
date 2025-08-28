@@ -1,0 +1,25 @@
+{
+  "name": "wanderlust",
+  "version": "1.0.0",
+  "description": "Property listing and booking website",
+  "homepage": "https://github.com/Aniketdey2004/Wanderlust#readme",
+  "bugs": {
+    "url": "https://github.com/Aniketdey2004/Wanderlust/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Aniketdey2004/Wanderlust.git"
+  },
+  "license": "ISC",
+  "author": "Aniket Dey",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "mongoose": "^8.18.0"
+  }
+}
