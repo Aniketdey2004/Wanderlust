@@ -8,9 +8,15 @@ const listingSchema=new Schema({
     },
     description:String,
     image:{
-        type:String,
-        default:"https://unsplash.com/photos/person-in-swimming-pool-during-daytime-rlwE8f8anOc",
-        set:(v)=>v===""?"https://unsplash.com/photos/person-in-swimming-pool-during-daytime-rlwE8f8anOc":v
+        filename:{
+            type:String,
+            default:"image"
+        },
+        url:{
+            type:String,
+            default:"https://unsplash.com/photos/person-in-swimming-pool-during-daytime-rlwE8f8anOc",
+            set:(v)=>v===""?"https://unsplash.com/photos/person-in-swimming-pool-during-daytime-rlwE8f8anOc":v
+        }
     },
     price:Number,
     location:String,
@@ -19,3 +25,4 @@ const listingSchema=new Schema({
 
 const Listing=mongoose.model("Listing",listingSchema);
 module.exports=Listing;
+
