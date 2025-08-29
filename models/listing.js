@@ -8,15 +8,9 @@ const listingSchema=new Schema({
     },
     description:String,
     image:{
-        filename:{
-            type:String,
-            default:"image"
-        },
-        url:{
-            type:String,
-            default:"https://unsplash.com/photos/person-in-swimming-pool-during-daytime-rlwE8f8anOc",
-            set:(v)=>v===""?"https://unsplash.com/photos/person-in-swimming-pool-during-daytime-rlwE8f8anOc":v
-        }
+        type:String,
+        default:"https://unsplash.com/photos/person-in-swimming-pool-during-daytime-rlwE8f8anOc",
+        set:(v)=>v===""?"https://unsplash.com/photos/person-in-swimming-pool-during-daytime-rlwE8f8anOc":v
     },
     price:Number,
     location:String,
