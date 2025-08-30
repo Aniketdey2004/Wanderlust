@@ -1,11 +1,12 @@
 <%layout("/layouts/boilerplate.ejs")%>
 <body>
     <h1>All Listings</h1>
-    <form method="get" action="/listings/new">
+    <!-- <form method="get" action="/listings/new">
         <button>Create New Listing</button>
-    </form>
+    </form> -->
     <ul>
         <%for(item of allListings){%>
+            <li><a href="/listings/<%=item._id%>"><%=item.title%></a></li>
             <li><a href="/listings/<%=item._id%>"><%=item.title%></a></li>
         <%}%>
     </ul>
