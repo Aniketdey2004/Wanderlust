@@ -72,7 +72,15 @@ app.put("/listings/:id",async (req,res)=>{
     const updatedItem=req.body;
     await Listing.findByIdAndUpdate(id,{...updatedItem});
     res.redirect(`/listings/${id}`);
-})
+});
+
+//Delete Route
+app.delete("/listings/:id",async (req,res)=>{
+    let {id}=req.params;
+    let deletedItem=await Listing.findByIdAndDelete(id);
+    console.log(deletedItem);
+    res.redirect("/listings");
+});
 
 // app.get("/test",async (req,res)=>{
 //     const sampleList=new Listing({

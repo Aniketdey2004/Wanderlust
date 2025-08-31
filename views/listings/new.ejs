@@ -1,26 +1,77 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WanderLust</title>
-</head>
+<%layout("/layouts/boilerplate.ejs")%>
 <body>
-    <h1>Create a new Listing</h1>
-    <form method="POST" action="/listings">
-        <input name="title" type="text" placeholder="enter title">
-        <br><br>
-        <textarea name="description" placeholder="enter description"></textarea>
-        <br><br>
-        <input name="image" type="text" placeholder="enter url/link">
-        <br><br>
-        <input name="price" type="number" placeholder="enter price">
-        <br><br>
-        <input name="country" type="text" placeholder="enter country name">
-        <br><br>
-        <input name="location" type="text" placeholder="enter location">
-        <br><br>
-        <button>Add your place</button>
-    </form>
+  <br><br>
+  <div class="row">
+    <div class="col-8 offset-2">
+      <h2>Create a new Listing</h2>
+      <form method="POST" action="/listings">
+        <div class="mb-3">
+          <label for="title" class="form-label">Title</label>
+          <input
+            name="title"
+            type="text"
+            placeholder="Enter a catchy title"
+            id="title"
+            class="form-control"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <textarea
+            name="description"
+            id="description"
+            class="form-control"
+          ></textarea>
+        </div>
+        <div class="mb-3">
+          <label for="image" class="form-label">Image</label>
+          <input
+            name="image"
+            type="text"
+            placeholder="Enter url/link"
+            id="image"
+            class="form-control"
+            required
+          />
+        </div>
+        <div class="row">
+          <div class="mb-3 col-md-4">
+            <label for="price" class="form-label">Price</label>
+            <input
+              name="price"
+              type="number"
+              placeholder="4000"
+              id="price"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="mb-3 col-md-8">
+            <label for="country" class="form-label">Country</label>
+            <input
+              name="country"
+              type="text"
+              placeholder="India"
+              id="country"
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="location" class="form-label">Location</label>
+          <input
+            name="location"
+            type="text"
+            placeholder="Bani Park , Jaipur"
+            id="location"
+            class="form-control"
+            required
+          />
+        </div>
+        <button class="btn btn-danger">Add</button>
+      </form>
+    </div>
+  </div>
+  <br><br>
 </body>
-</html>
