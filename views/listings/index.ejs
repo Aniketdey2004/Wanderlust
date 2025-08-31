@@ -1,6 +1,6 @@
 <%layout("/layouts/boilerplate.ejs")%>
 <body>
-  <h1>All Listings</h1>
+  <h1 class="mt-4">All Listings</h1>
   <div class="row row-cols-lg-3 row-cols-md-2 row-cols-1">
     <%for(item of allListings){%>
     <a href="/listings/<%=item._id%>" class="listing-link">

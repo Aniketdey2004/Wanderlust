@@ -74,3 +74,9 @@ body{
     opacity: 0.2;
     background-color: white;
 }
+
+/* New list add button */
+.add-btn,.edit-btn{
+    background-color: #fe424d;
+    color: white;
+}

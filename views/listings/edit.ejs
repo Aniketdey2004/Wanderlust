@@ -1,26 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WanderLust</title>
-</head>
+<%layout("/layouts/boilerplate.ejs")%>
 <body>
-    <h1>Edit your listing</h1>
-    <form method="POST" action="/listings/<%=listItem._id%>?_method=PUT">
-        <input name="title" type="text" value="<%=listItem.title%>">
-        <br><br>
-        <textarea name="description"><%=listItem.description%></textarea>
-        <br><br>
-        <input name="image" type="text" value="<%=listItem.image%>">
-        <br><br>
-        <input name="price" type="number" value="<%=listItem.price%>">
-        <br><br>
-        <input name="country" type="text" value="<%=listItem.country%>">
-        <br><br>
-        <input name="location" type="text" value="<%=listItem.location%>">
-        <br><br>
-        <button>Confirm edit</button>
-    </form>
+  <div class="row mt-4 mb-5">
+    <div class="col-8 offset-2">
+      <h2>Edit your listing</h2>
+      <form method="POST" action="/listings/<%=listItem._id%>?_method=PUT">
+        <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input name="title" type="text" value="<%=listItem.title%>" id="title" class="form-control"/>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea name="description" id="description" class="form-control"><%=listItem.description%></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="image" class="form-label">Image</label>
+            <input name="image" type="text" value="<%=listItem.image%>" id="image" class="form-control"/>
+        </div>
+        <div class="row">
+            <div class="mb-3 col-md-4">
+                <label for="price" class="form-label">Price</label>
+                <input name="price" type="number" value="<%=listItem.price%>" id="price" class="form-control"/>
+            </div>
+            <div class="mb-3 col-md-8">
+                <label for="country" class="form-label">Country</label>
+                <input name="country" type="text" value="<%=listItem.country%>" id="country" class="form-control"/>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="location" class="form-label">Location</label>
+            <input name="location" type="text" value="<%=listItem.location%>" id="location" class="form-control"/>
+        </div>
+        <button class="btn edit-btn">Confirm edit</button>
+      </form>
+    </div>
+  </div>
 </body>
-</html>
