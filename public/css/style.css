@@ -55,7 +55,7 @@ body{
     width: 100%;
     object-fit: cover;
 }
-.card-body{
+.listed-body{
     padding: 0;
 }
 .card-text{
@@ -75,8 +75,31 @@ body{
     background-color: white;
 }
 
-/* New list add button */
+/* new list add button ,edit page button*/
 .add-btn,.edit-btn{
     background-color: #fe424d;
     color: white;
+}
+.add-btn:hover{
+    background-color: #fe424d;
+}
+.edit-btn:hover{
+    background-color: #fe424d;
+}
+
+
+/* Show page  */
+.show-links{
+    display: flex;
+}
+.show-btn{
+    background-color: #fe424d;
+    color: white;
+}
+.show-btn:hover{
+    background-color: #fe424d;
+}
+.show-img{
+    height: 35vh;
+    background-size: cover;
 }
