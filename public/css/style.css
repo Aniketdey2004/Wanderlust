@@ -46,7 +46,7 @@ body{
 
 
 /*Cards*/
-.card{
+.listing-card{
     border: none;
     margin-bottom: 2rem;
 }
@@ -55,7 +55,7 @@ body{
     width: 100%;
     object-fit: cover;
 }
-.card-body{
+.listing-card-body{
     padding: 0.5rem 0 0 0;
 }
 .card-text{
