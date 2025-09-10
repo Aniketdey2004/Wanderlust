@@ -9,6 +9,7 @@ const ejsMate=require('ejs-mate');
 const wrapAsync=require('./utils/wrapAsync');
 const ExpressError=require('./utils/ExpressError');
 const {listingSchema}=require('./schema.js');
+const Review=require('./models/review.js');
 
 const MONGO_URL= 'mongodb://localhost:27017/wanderlust';
 
@@ -19,7 +20,7 @@ app.use(methodOverride('_method'));
 app.engine("ejs",ejsMate);
 app.use(express.static(path.join(__dirname,"/public")));
 
-
+//Making connection to database
 main()
 .then(()=>{
     console.log("Successfully connected to DB");
@@ -49,6 +50,7 @@ app.get("/",(req,res)=>{
     res.send("working");
 });
 
+//Listings
 //Index route
 app.get("/listings",wrapAsync(async (req,res)=>{
     const allListings=await Listing.find({});
@@ -71,15 +73,15 @@ app.post("/listings",validateListing,wrapAsync(async (req,res,next)=>{
 //Edit Route
 app.get("/listings/:id/edit",wrapAsync(async (req,res)=>{
     let {id}=req.params;
-    const listItem=await Listing.findById(id);
-    res.render("listings/edit.ejs",{listItem});
+    const listing=await Listing.findById(id);
+    res.render("listings/edit.ejs",{listing});
 }));
 
 //Show route 
 app.get("/listings/:id",wrapAsync(async (req,res)=>{
     let {id}=req.params;
-    const listItem=await Listing.findById(id);
-    res.render("listings/show.ejs",{listItem});
+    const listing=await Listing.findById(id);
+    res.render("listings/show.ejs",{listing});
 }));
 
 //Update Route
@@ -98,6 +100,18 @@ app.delete("/listings/:id",wrapAsync(async (req,res)=>{
     res.redirect("/listings");
 }));
 
+
+//Reviews
+//Post Route
+app.post('/listings/:id/reviews',async(req,res)=>{
+    let listing=await Listing.findById(req.params.id);
+    let newReview=new Review(req.body.review);
+    listing.reviews.push(newReview);
+    await newReview.save();
+    await listing.save();
+    res.redirect(`/listings/${listing._id}`);
+});
+
 // app.get("/test",async (req,res)=>{
 //     const sampleList=new Listing({
 //         title:"My new Villa",
@@ -111,6 +125,8 @@ app.delete("/listings/:id",wrapAsync(async (req,res)=>{
 //     res.send("saved");
 // });
 //Path not found access handler
+
+//Matching Unmatched Route
 app.all(/.*/,(req,res,next)=>{
     throw new ExpressError(404,"Page Not Found");
 });

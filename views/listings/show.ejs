@@ -2,25 +2,25 @@
 <body>
   <div class="row mt-4 mb-4">
     <div class="col-10 col-md-6 offset-md-3 offset-1">
-      <h2><%=listItem.title%></h2>
+      <h2><%=listing.title%></h2>
       <div class="card">
         <img
-          src="<%=listItem.image%>"
+          src="<%=listing.image%>"
           class="card-img-top show-img"
           alt="listing-image"
         />
         <div class="card-body">
-          <h6 class="card-subtitle mb-2 text-body-secondary"><%=listItem.description%></h6>
+          <h6 class="card-subtitle mb-2 text-body-secondary"><%=listing.description%></h6>
           <p class="card-text">
-            &#8377;<%=listItem.price.toLocaleString('en-IN')%>
+            &#8377;<%=listing.price.toLocaleString('en-IN')%>
           </p>
-          <p class="card-text"><%=listItem.location%></p>
-          <p class="card-text"><%=listItem.country%></p>
+          <p class="card-text"><%=listing.location%></p>
+          <p class="card-text"><%=listing.country%></p>
           <div class="show-links">
-            <a href="/listings/<%=listItem._id%>/edit" class="btn show-btn">Edit</a>
+            <a href="/listings/<%=listing._id%>/edit" class="btn show-btn">Edit</a>
             <form
               method="post"
-              action="/listings/<%=listItem._id%>?_method=DELETE"
+              action="/listings/<%=listing._id%>?_method=DELETE"
             >
               <button class="btn show-btn ms-2">Delete</button>
             </form>
@@ -31,7 +31,7 @@
     <div class="col-10 col-md-6 offset-md-3 offset-1">
       <hr>
       <h4>Leave a Review</h4>
-      <form action="">
+      <form method="post" action="/listings/<%=listing._id%>/reviews">
         <div class="mb-3">
           <label for="rating" class="form-label">Rating</label>
           <input type="range" name="review[rating]" id="rating" min="1" max="5" class="form-range">
