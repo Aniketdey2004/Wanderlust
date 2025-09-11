@@ -10,6 +10,7 @@ const wrapAsync=require('./utils/wrapAsync');
 const ExpressError=require('./utils/ExpressError');
 const {listingSchema,reviewSchema}=require('./schema.js');
 const Review=require('./models/review.js');
+const listings=require('./routes/listings.js');
 
 const MONGO_URL= 'mongodb://localhost:27017/wanderlust';
 
@@ -32,19 +33,7 @@ main()
 async function main(){
     await mongoose.connect(MONGO_URL);
 }
-//Middleware for validating listing
-const validateListing=(req,res,next)=>{
-    let {error} =listingSchema.validate(req.body);
-    if(error)
-    {
-        let errMsg=error.details.map((e)=>e.message).join(',');
-        throw new ExpressError(400,errMsg);
-    }
-    else
-    {
-        next();
-    }
-}
+
 
 //Middleware for validating Review
 const validateReview=(req,res,next)=>{
@@ -64,56 +53,9 @@ app.get("/",(req,res)=>{
     res.send("working");
 });
 
-//Listings
-//Index route
-app.get("/listings",wrapAsync(async (req,res)=>{
-    const allListings=await Listing.find({});
-    res.render("listings/index.ejs",{allListings});
-}));
 
-//New Route 
-app.get("/listings/new",wrapAsync(async (req,res)=>{
-    res.render("listings/new.ejs");
-}));
-
-//Create Route
-app.post("/listings",validateListing,wrapAsync(async (req,res,next)=>{
-    const newListing=req.body;
-    const listItem=new Listing(newListing);
-    await listItem.save();
-    res.redirect("/listings");
-}));
-
-//Edit Route
-app.get("/listings/:id/edit",wrapAsync(async (req,res)=>{
-    let {id}=req.params;
-    const listing=await Listing.findById(id);
-    res.render("listings/edit.ejs",{listing});
-}));
-
-//Show route 
-app.get("/listings/:id",wrapAsync(async (req,res)=>{
-    let {id}=req.params;
-    const listing=await Listing.findById(id).populate("reviews");
-    res.render("listings/show.ejs",{listing});
-}));
-
-//Update Route
-app.put("/listings/:id",validateListing,wrapAsync(async (req,res)=>{
-    let {id}=req.params;
-    const updatedItem=req.body;
-    await Listing.findByIdAndUpdate(id,{...updatedItem});
-    res.redirect(`/listings/${id}`);
-}));
-
-//Delete Route
-app.delete("/listings/:id",wrapAsync(async (req,res)=>{
-    let {id}=req.params;
-    let deletedItem=await Listing.findByIdAndDelete(id);
-    console.log(deletedItem);
-    res.redirect("/listings");
-}));
-
+//listings routes
+app.use("/listings",listings);
 
 //Reviews
 //Post Route

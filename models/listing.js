@@ -22,7 +22,7 @@ const listingSchema=new Schema({
         }
     ]
 });
-
+//Mongoose middleware to delete attached reviews
 listingSchema.post('findOneAndDelete',async(listing)=>{
     if(listing)
     {
