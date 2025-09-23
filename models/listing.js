@@ -20,8 +20,13 @@ const listingSchema=new Schema({
             type:Schema.Types.ObjectId,
             ref:'Review'
         }
-    ]
+    ],
+    owner:{
+        type:Schema.Types.ObjectId,
+        ref:"User"
+    }
 });
+
 //Mongoose middleware to delete attached reviews
 listingSchema.post('findOneAndDelete',async(listing)=>{
     if(listing)
