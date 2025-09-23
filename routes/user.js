@@ -33,10 +33,9 @@ router.get("/login",(req,res)=>{
     res.render("users/login.ejs");
 });
 
-router.post("/login",saveRedirectUrl,passport.authenticate("local",{failureRedirect:"/login",failureFlash:true}),(req,res)=>{
+router.post("/login",passport.authenticate("local",{failureRedirect:"/login",failureFlash:true}),(req,res)=>{
     req.flash("success","Welcome to Wanderlust");
-    let redirectUrl=res.locals.redirectUrl||"/listings";
-    res.redirect(redirectUrl);
+    res.redirect("/listings");
 });
 
 
