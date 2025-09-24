@@ -42,10 +42,13 @@ module.exports.validateListing=(req,res,next)=>{
         let errMsg=error.details.map((e)=>e.message).join(',');
         throw new ExpressError(400,errMsg);
     }
-    else
+    
+    if(!req.file)
     {
-        next();
+        throw new ExpressError(400,"image is required");
     }
+
+    next();
 }
 
 //Middleware for validating Review
