@@ -103,3 +103,9 @@ body{
     height: 35vh;
     background-size: cover;
 }
+
+/* map */
+#map {
+    height: 400px;
+    width: 50vw;
+}

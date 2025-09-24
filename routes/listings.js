@@ -1,7 +1,7 @@
 const express=require('express');
 const router=express.Router();
 const wrapAsync=require('./../utils/wrapAsync');
-const {isLoggedIn,isOwner,validateListing}=require('../middleware.js');
+const {isLoggedIn,isOwner,validateListing,validateUpdate}=require('../middleware.js');
 const listingController=require('../controllers/listing.js');
 const multer  = require('multer');
 const {storage}=require('../cloudConfig.js');
@@ -22,7 +22,7 @@ router.get("/:id/edit",isLoggedIn,isOwner,wrapAsync(listingController.renderEdit
 
 router.route("/:id")
 .get(wrapAsync(listingController.showListing))
-.put(isLoggedIn,isOwner,validateListing,wrapAsync(listingController.updateListing))
+.put(isLoggedIn,isOwner,upload.single('image'),validateUpdate,wrapAsync(listingController.updateListing))
 .delete(isLoggedIn,isOwner,wrapAsync(listingController.destroyListing));
 
 module.exports=router;
