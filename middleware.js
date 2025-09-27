@@ -1,7 +1,7 @@
 const Listing=require('./models/listing.js');
 const Review=require('./models/review.js');
 const ExpressError=require('./utils/ExpressError');
-const {listingSchema,reviewSchema}=require('./schema.js');
+const {listingSchema,reviewSchema,userSchema}=require('./schema.js');
 
 module.exports.isLoggedIn=(req,res,next)=>{
     if(!req.isAuthenticated())
@@ -73,4 +73,17 @@ module.exports.validateUpdate=(req,res,next)=>{
         throw new ExpressError(400,errMsg);
     }
     next();
+}
+//Middleware for validating Review
+module.exports.validateUser=(req,res,next)=>{
+    let {error} =userSchema.validate(req.body);
+    if(error)
+    {
+        let errMsg=error.details.map((e)=>e.message).join(',');
+        throw new ExpressError(400,errMsg);
+    }
+    else
+    {
+        next();
+    }
 }

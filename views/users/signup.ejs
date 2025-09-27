@@ -3,7 +3,13 @@
   <div class="row mt-4 mb-5">
     <div class="col-8 offset-2">
       <h2>Signup On WanderLust</h2>
-      <form method="POST" action="/signup" novalidate class="needs-validation">
+      <form
+        method="POST"
+        action="/signup"
+        novalidate
+        class="needs-validation"
+        enctype="multipart/form-data"
+      >
         <div class="mb-3">
           <label for="username" class="form-label">Username</label>
           <input
@@ -39,6 +45,31 @@
             required
           />
           <div class="invalid-feedback">Please enter password!</div>
+        </div>
+        <div class="mb-3">
+          <label for="image" class="form-label">Upload Profile Picture</label>
+          <input name="picture" type="file" id="image" class="form-control" />
+        </div>
+        <div class="mb-3">
+          <label for="phone" class="form-label">Phone No.</label>
+          <input
+            name="Phone"
+            type="number"
+            id="phone"
+            class="form-control"
+            required
+          />
+          <div class="invalid-feedback">Please provide contact details!</div>
+        </div>
+        <div class="mb-3">
+          <label for="about" class="form-label">Tell us about yourself</label>
+          <textarea
+            name="About"
+            id="about"
+            class="form-control"
+            required
+          ></textarea>
+          <div class="invalid-feedback">Please tell us about yourself</div>
         </div>
         <button class="btn btn-success">SignUp</button>
       </form>

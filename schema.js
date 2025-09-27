@@ -13,3 +13,11 @@ module.exports.reviewSchema=Joi.object({
         comment:Joi.string().required()
     }).required()
 });
+
+module.exports.userSchema=Joi.object({
+    username:Joi.string().required(),
+    email:Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net','org'] } }).required(),
+    password:Joi.string().required(),
+    Phone:Joi.number().required(),
+    About:Joi.string().required()
+});

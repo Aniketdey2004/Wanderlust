@@ -1,13 +1,17 @@
 const User=require('../models/user.js');
 
+
 module.exports.renderSignupForm=(req,res)=>{
     res.render("users/signup.ejs");
 }
 
 module.exports.signUp=async (req,res)=>{
     try{
-        let {username,email,password}=req.body;
-        let newUser=new User({email,username});
+        let url=req.file.path;
+        let filename=req.file.filename;
+        let {username,email,password,Phone,About}=req.body;
+        let newUser=new User({email,username,Phone,About});
+        newUser.picture={url,filename};
         let registeredUser=await User.register(newUser,password);
         req.login(registeredUser,(err)=>{
             if(err)
@@ -41,4 +45,8 @@ module.exports.logout=(req,res,next)=>{
         req.flash("success","you logged out successfully");
         res.redirect("/listings");
     });
+}
+
+module.exports.getUser=(req,res)=>{
+    res.render("users/profile.ejs",{user:req.user});
 }
