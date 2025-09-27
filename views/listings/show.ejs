@@ -25,14 +25,14 @@
           <p class="card-text"><%=listing.country%></p>
           <%if(currUser && currUser._id.equals(listing.owner._id)){%>
           <div class="show-links">
-            <a href="/listings/<%=listing._id%>/edit" class="btn show-btn"
+            <a href="/listings/<%=listing._id%>/edit" class="btn edit-btn"
               >Edit</a
             >
             <form
               method="post"
               action="/listings/<%=listing._id%>?_method=DELETE"
             >
-              <button class="btn show-btn ms-2">Delete</button>
+              <button class="btn del-btn ms-2">Delete</button>
             </form>
           </div>
           <%}%>
@@ -95,7 +95,8 @@
         <%for(review of listing.reviews){%>
         <div class="card col-10 col-md-5 ms-3 mb-3">
           <div class="card-body">
-            <h5 class="card-title"><%=review.author.username%></h5>
+            <h5 class="card-title"><img src="<%=review.author.picture.url%>" alt="review creator"><%=review.author.username%></h5>
+            <p class="card-text"><%=review.createdAt.toLocaleDateString()%></p>
             <p
               class="starability-result card-text"
               data-rating="<%=review.rating%>"
