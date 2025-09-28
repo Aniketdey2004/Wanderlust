@@ -77,5 +77,5 @@ module.exports.destroyListing=async (req,res)=>{
         req.flash("success","Listing Deleted Successfully!");
     else
         req.flash("error","Listing you are looking for does not exist");
-    res.redirect("/listings");
+    res.redirect("/user/listings");
 }

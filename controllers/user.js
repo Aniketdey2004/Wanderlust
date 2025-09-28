@@ -1,5 +1,6 @@
 const User=require('../models/user.js');
-
+const Listing=require('../models/listing.js');
+const Review=require('../models/review.js');
 
 module.exports.renderSignupForm=(req,res)=>{
     res.render("users/signup.ejs");
@@ -49,4 +50,14 @@ module.exports.logout=(req,res,next)=>{
 
 module.exports.getUser=(req,res)=>{
     res.render("users/profile.ejs",{user:req.user});
+}
+
+module.exports.getListings=async(req,res)=>{
+    let userListing=await Listing.find({owner:req.user._id});
+    res.render("users/listing.ejs",{userListing})
+}
+
+module.exports.getReviews=async(req,res)=>{
+    let userReviews=await Review.find({author:req.user._id}).populate("listing");
+    res.render("users/reviews.ejs",{userReviews});
 }

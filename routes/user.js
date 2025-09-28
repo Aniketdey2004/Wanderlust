@@ -20,10 +20,8 @@ router.route("/login")
 .post(passport.authenticate("local",{failureRedirect:"/login",failureFlash:true}),userController.login);
 
 router.get("/user",isLoggedIn,userController.getUser);
-router.get("/user/listings",async(req,res)=>{
-    console.log(req.user);
-    res.send("good place");
-});
+router.get("/user/listings",isLoggedIn,wrapAsync(userController.getListings));
+router.get("/user/reviews",isLoggedIn,wrapAsync(userController.getReviews));
 
 router.get("/logout",userController.logout);
 

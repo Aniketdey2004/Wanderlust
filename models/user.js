@@ -8,8 +8,14 @@ const userSchema=new Schema({
         required:true
     },
     picture:{
-        url:String,
-        filename:String
+        url:{
+            type:String,
+            default:"/photos/user.png"
+        },
+        filename:{
+            type:String,
+            default:"User"
+        }
     },
     Phone:Number,
     About:{
