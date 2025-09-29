@@ -70,6 +70,41 @@ module.exports.updateListing=async (req,res)=>{
     res.redirect(`/listings/${id}`);
 }
 
+module.exports.renderbookListing=async (req,res)=>{
+    let {id}=req.params;
+    let listing=await Listing.findById(id);
+    if(!listing)
+    {
+        req.flash("error","Listing you are looking for does not exist");
+        return res.redirect("/listing");
+    }
+    res.render("listings/book.ejs",{listing});
+}
+
+module.exports.bookListing=async (req,res)=>{
+    let {id}=req.params;
+    let {from,to}=req.body;
+    let booking={userid:req.user._id,from,to};
+    let listing=await Listing.findById(id);
+    if(!listing){
+        req.flash("error","Listing you are looking for does not exist");
+        return res.redirect("/listing");
+    }
+    if(from===undefined || to===undefined)
+    {
+        req.flash("error","Bad booking");
+    }
+    listing.bookings.push(booking);
+    let bookedListing=await listing.save();
+    if(bookedListing){
+        req.flash("success","Successfully Booked");
+    }
+    else{
+        req.flash("error","Error in Booking");
+    }
+    res.redirect(`/listings/${id}`);
+}
+
 module.exports.destroyListing=async (req,res)=>{
     let {id}=req.params;
     let deletedItem=await Listing.findByIdAndDelete(id);

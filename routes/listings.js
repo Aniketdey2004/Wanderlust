@@ -25,4 +25,8 @@ router.route("/:id")
 .put(isLoggedIn,isOwner,upload.single('image'),validateUpdate,wrapAsync(listingController.updateListing))
 .delete(isLoggedIn,isOwner,wrapAsync(listingController.destroyListing));
 
+router.route("/:id/book")
+.get(isLoggedIn,wrapAsync(listingController.renderbookListing))
+.post(isLoggedIn,wrapAsync(listingController.bookListing));
+
 module.exports=router;

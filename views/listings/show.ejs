@@ -36,6 +36,9 @@
             </form>
           </div>
           <%}%>
+          <%if(currUser){%>
+          <a href="/listings/<%=listing._id%>/book" class="btn btn-danger">Book</a>
+          <%}%>
         </div>
       </div>
     </div>

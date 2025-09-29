@@ -24,6 +24,16 @@ const listingSchema=new Schema({
         type:Schema.Types.ObjectId,
         ref:"User"
     },
+    bookings:[
+        {
+            userid:{
+                type:Schema.Types.ObjectId,
+                ref:"User"
+            },
+            from:"Date",
+            to:"Date"
+        }
+    ],
     geometry:{
         type: {
             type: String, // Don't do `{ location: { type: String } }`
