@@ -21,6 +21,7 @@ const User=require('./models/user.js');
 const listingRouter=require('./routes/listings.js');
 const reviewRouter=require('./routes/reviews.js');
 const userRouter=require('./routes/user.js');
+const paymentRouter=require('./routes/payment.js');
 
 const MONGO_URL= 'mongodb://localhost:27017/wanderlust';
 
@@ -40,6 +41,7 @@ async function main(){
 //middlewares
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"/views"));
+app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(methodOverride('_method'));
 app.engine("ejs",ejsMate);
@@ -84,6 +86,9 @@ app.use("/listings/:id/reviews",reviewRouter);
 
 //user routes
 app.use("/",userRouter);
+
+//payment router
+app.use("/payment",paymentRouter);
 
 //Matching Unmatched Route
 app.all(/.*/,(req,res,next)=>{

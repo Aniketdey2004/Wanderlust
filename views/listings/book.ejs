@@ -1,16 +1,90 @@
 <%layout("/layouts/boilerplate.ejs")%>
 <div class="row mt-4 mb-5">
   <div class="col-8 offset-2">
-    <form action="/listings/<%=listing._id%>/book" method="post">
+    <form
+      class="needs-validation book-form"
+      novalidate
+    >
       <div class="mb-3">
         <label for="from" class="form-label">From</label>
-        <input type="date" name="from" id="from" class="form-control" />
+        <input
+          type="date"
+          name="from"
+          id="from"
+          class="form-control"
+          required
+        />
       </div>
       <div class="mb-3">
         <label for="to" class="form-label">To</label>
-        <input type="date" name="to" id="to" class="form-control" />
+        <input type="date" name="to" id="to" class="form-control" required />
       </div>
-      <button class="btn btn-danger">Confirm Booking</button>
+      <button type="submit" class="btn btn-danger form-btn">Confirm Booking</button>
     </form>
   </div>
 </div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+const listing = <%- JSON.stringify(listing) %>;
+
+// Select the form instead of the button
+let form = document.querySelector('.book-form');
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault(); // prevent default form submission
+
+  // Create Razorpay order on your server
+  const response = await fetch('/payment/createBooking', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ amount: listing.price })
+  });
+
+  if (!response.ok) {
+    alert("Error creating payment order.");
+    window.location.href = `/listings/<%= listing._id %>`;
+    return;
+  }
+
+  const order = await response.json();
+
+  const options = {
+    key: "<%= process.env.RAZORPAY_KEY %>",
+    amount: order.amount,
+    currency: order.currency,
+    name: "Wanderlust",
+    description: "Booking Payment",
+    order_id: order.id,
+    handler: async function (response) {
+      // Only after successful payment, send booking request
+      const from = document.getElementById('from').value;
+      const to = document.getElementById('to').value;
+
+      const res = await fetch(`/listings/<%= listing._id %>/book`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          from,
+          to,
+          paymentId: response.razorpay_payment_id,
+          orderId: response.razorpay_order_id,
+          signature: response.razorpay_signature
+        })
+      });
+
+      if (res.ok) {
+        alert("Booking and payment successful!");
+        window.location.href = `/listings/<%= listing._id %>`;
+      } else {
+        alert("Booking failed. Please contact support.");
+        window.location.href = `/listings/<%= listing._id %>`;
+      }
+    }
+  };
+
+  const rzp = new Razorpay(options);
+  rzp.open();
+  return false;
+});
+</script>

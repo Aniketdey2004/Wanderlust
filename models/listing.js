@@ -31,7 +31,9 @@ const listingSchema=new Schema({
                 ref:"User"
             },
             from:"Date",
-            to:"Date"
+            to:"Date",
+            paymentId:"String",
+            orderId:"String"
         }
     ],
     geometry:{

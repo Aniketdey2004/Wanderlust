@@ -1,6 +1,7 @@
 const Listing=require('./models/listing.js');
 const Review=require('./models/review.js');
 const ExpressError=require('./utils/ExpressError');
+const crypto=require('crypto');
 const {listingSchema,reviewSchema,userSchema}=require('./schema.js');
 
 module.exports.isLoggedIn=(req,res,next)=>{
@@ -86,4 +87,20 @@ module.exports.validateUser=(req,res,next)=>{
     {
         next();
     }
+}
+
+module.exports.verifyPayment=(req, res,next) => {
+  const { paymentId, orderId, signature } = req.body;
+
+  const hmac = crypto.createHmac("sha256", process.env.RAZORPAY_SECRET_CODE);
+  hmac.update(orderId + "|" + paymentId);
+  const generatedSignature = hmac.digest("hex");
+
+  if (generatedSignature === signature) {
+    console.log("Payment verified");
+    next();
+  } else {
+    console.log("Payment False");
+    res.status(400).send("Invalid signature");
+  }
 }

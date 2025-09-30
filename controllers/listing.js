@@ -83,26 +83,24 @@ module.exports.renderbookListing=async (req,res)=>{
 
 module.exports.bookListing=async (req,res)=>{
     let {id}=req.params;
-    let {from,to}=req.body;
-    let booking={userid:req.user._id,from,to};
+    let {from,to,paymentId,orderId}=req.body;
+    let booking={userid:req.user._id,from,to,paymentId,orderId};
     let listing=await Listing.findById(id);
     if(!listing){
-        req.flash("error","Listing you are looking for does not exist");
-        return res.redirect("/listing");
+        res.status(400).send("Listing does not exist");
     }
     if(from===undefined || to===undefined)
     {
-        req.flash("error","Bad booking");
+        res.status(400).send("Bad booking request");
     }
     listing.bookings.push(booking);
     let bookedListing=await listing.save();
     if(bookedListing){
-        req.flash("success","Successfully Booked");
+        res.status(200).send("Successfull booking");
     }
     else{
-        req.flash("error","Error in Booking");
+        res.status(500).send("Error in creating booking");
     }
-    res.redirect(`/listings/${id}`);
 }
 
 module.exports.destroyListing=async (req,res)=>{

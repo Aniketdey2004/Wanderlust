@@ -1,7 +1,7 @@
 const express=require('express');
 const router=express.Router();
 const wrapAsync=require('./../utils/wrapAsync');
-const {isLoggedIn,isOwner,validateListing,validateUpdate}=require('../middleware.js');
+const {isLoggedIn,isOwner,validateListing,validateUpdate,verifyPayment}=require('../middleware.js');
 const listingController=require('../controllers/listing.js');
 const multer  = require('multer');
 const {storage}=require('../cloudConfig.js');
@@ -27,6 +27,6 @@ router.route("/:id")
 
 router.route("/:id/book")
 .get(isLoggedIn,wrapAsync(listingController.renderbookListing))
-.post(isLoggedIn,wrapAsync(listingController.bookListing));
+.post(isLoggedIn,verifyPayment,wrapAsync(listingController.bookListing));
 
 module.exports=router;
