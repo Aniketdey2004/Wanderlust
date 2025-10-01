@@ -10,25 +10,27 @@ const sampleListings = [
     price: 1500,
     location: "Malibu",
     country: "United States",
+    category: ["Beach","Room","Boats","Camping"],
     geometry: {
       type: "Point",
-      coordinates: [-118.7798, 34.0259], // Malibu, CA
+      coordinates: [-118.7798, 34.0259],
     },
   },
   {
-    title: "Modern Loft in Downtown",
+    title: "Tranquil Waterside Stay",
     description:
-      "Stay in the heart of the city in this stylish loft apartment. Perfect for urban explorers!",
+      "Enhoy the waters and beautiful campire nights",
     image: {
       filename: "listingimage",
       url: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fHRyYXZlbHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60",
     },
     price: 1200,
-    location: "New York City",
-    country: "United States",
+    location: "Lakeview Cabin, Manali",
+    country: "India",
+    category: ["Room","Boats","Camping"],
     geometry: {
       type: "Point",
-      coordinates: [-74.006, 40.7128], // NYC
+      coordinates: [77.1892, 32.3432],
     },
   },
   {
@@ -42,9 +44,10 @@ const sampleListings = [
     price: 1000,
     location: "Aspen",
     country: "United States",
+    category: ["Mountains","Amazing pools","Room"],
     geometry: {
       type: "Point",
-      coordinates: [-106.837, 39.1911], // Aspen, CO
+      coordinates: [-106.837, 39.1911],
     },
   },
   {
@@ -58,9 +61,10 @@ const sampleListings = [
     price: 2500,
     location: "Florence",
     country: "Italy",
+    category: ["Castles", "Iconic cities","Amazing pools","Beach"],
     geometry: {
       type: "Point",
-      coordinates: [11.2558, 43.7699], // Florence, Italy
+      coordinates: [11.2558, 43.7699],
     },
   },
   {
@@ -74,14 +78,16 @@ const sampleListings = [
     price: 800,
     location: "Portland",
     country: "United States",
+    category: ["Farms", "Camping","Room","Amazing pools"],
     geometry: {
       type: "Point",
-      coordinates: [-122.6765, 45.5231], // Portland, OR
+      coordinates: [-122.6765, 45.5231],
     },
   },
   {
     title: "Beachfront Paradise",
-    description: "Step out of your door onto the sandy beach. This beachfront condo offers the ultimate relaxation.",
+    description:
+      "Step out of your door onto the sandy beach. This beachfront condo offers the ultimate relaxation.",
     image: {
       filename: "listingimage",
       url: "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fGhvdGVsc3xlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60",
@@ -89,14 +95,16 @@ const sampleListings = [
     price: 2000,
     location: "Cancun",
     country: "Mexico",
+    category: ["Amazing pools", "Room","Beach","Boats"],
     geometry: {
       type: "Point",
-      coordinates: [-86.8515, 21.1619] // Cancun, Mexico
-    }
+      coordinates: [-86.8515, 21.1619],
+    },
   },
   {
     title: "Rustic Cabin by the Lake",
-    description: "Spend your days fishing and kayaking on the serene lake. This cozy cabin is perfect for outdoor enthusiasts.",
+    description:
+      "Spend your days fishing and kayaking on the serene lake. This cozy cabin is perfect for outdoor enthusiasts.",
     image: {
       filename: "listingimage",
       url: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fG1vdW50YWlufGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
@@ -104,14 +112,16 @@ const sampleListings = [
     price: 900,
     location: "Lake Tahoe",
     country: "United States",
+    category: ["Mountains", "Camping","Boats"],
     geometry: {
       type: "Point",
-      coordinates: [-120.0438, 39.0968] // Lake Tahoe, USA
-    }
+      coordinates: [-120.0438, 39.0968],
+    },
   },
   {
     title: "Luxury Penthouse with City Views",
-    description: "Indulge in luxury living with panoramic city views from this stunning penthouse apartment.",
+    description:
+      "Indulge in luxury living with panoramic city views from this stunning penthouse apartment.",
     image: {
       filename: "listingimage",
       url: "https://images.unsplash.com/photo-1622396481328-9b1b78cdd9fd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8c2t5JTIwdmFjYXRpb258ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=800&q=60",
@@ -119,14 +129,16 @@ const sampleListings = [
     price: 3500,
     location: "Los Angeles",
     country: "United States",
+    category: ["Iconic cities", "Room","Beach"],
     geometry: {
       type: "Point",
-      coordinates: [-118.2437, 34.0522] // Los Angeles, USA
-    }
+      coordinates: [-118.2437, 34.0522],
+    },
   },
   {
     title: "Ski-In/Ski-Out Chalet",
-    description: "Hit the slopes right from your doorstep in this ski-in/ski-out chalet in the Swiss Alps.",
+    description:
+      "Hit the slopes right from your doorstep in this ski-in/ski-out chalet in the Swiss Alps.",
     image: {
       filename: "listingimage",
       url: "https://images.unsplash.com/photo-1502784444187-359ac186c5bb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fHNreSUyMHZhY2F0aW9ufGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
@@ -134,14 +146,16 @@ const sampleListings = [
     price: 3000,
     location: "Verbier",
     country: "Switzerland",
+    category: ["Mountains", "Arctic","Boats"],
     geometry: {
       type: "Point",
-      coordinates: [7.2306, 46.0966] // Verbier, Switzerland
-    }
+      coordinates: [7.2306, 46.0966],
+    },
   },
   {
     title: "Safari Lodge in the Serengeti",
-    description: "Experience the thrill of the wild in a comfortable safari lodge. Witness the Great Migration up close.",
+    description:
+      "Experience the thrill of the wild in a comfortable safari lodge. Witness the Great Migration up close.",
     image: {
       filename: "listingimage",
       url: "https://images.unsplash.com/photo-1493246507139-91e8fad9978e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mjl8fG1vdW50YWlufGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
@@ -149,14 +163,16 @@ const sampleListings = [
     price: 4000,
     location: "Serengeti National Park",
     country: "Tanzania",
+    category: ["Mountains", "Camping","Boats"],
     geometry: {
       type: "Point",
-      coordinates: [34.8233, -2.3333] // Serengeti, Tanzania
-    }
+      coordinates: [34.8233, -2.3333],
+    },
   },
   {
     title: "Historic Canal House",
-    description: "Stay in a piece of history in this beautifully preserved canal house in Amsterdam's iconic district.",
+    description:
+      "Stay in a piece of history in this beautifully preserved canal house in Amsterdam's iconic district.",
     image: {
       filename: "listingimage",
       url: "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y2FtcGluZ3xlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60",
@@ -164,12 +180,12 @@ const sampleListings = [
     price: 1800,
     location: "Amsterdam",
     country: "Netherlands",
+    category: ["Iconic cities", "Castles","Mountains"],
     geometry: {
       type: "Point",
-      coordinates: [4.9041, 52.3676] // Amsterdam, Netherlands
-    }
-  }
-  // ... repeat same structure for all listings with appropriate coordinates
+      coordinates: [4.9041, 52.3676],
+    },
+  },
 ];
 
 module.exports = { data: sampleListings };

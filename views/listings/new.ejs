@@ -1,9 +1,15 @@
 <%layout("/layouts/boilerplate.ejs")%>
-<body>
-  <div class="row mt-4 mb-5">
-    <div class="col-8 offset-2">
-      <h2>Create a new Listing</h2>
-      <form method="POST" action="/listings" novalidate class="needs-validation" enctype="multipart/form-data">
+
+  <div class="row mt-4">
+    <div class="col-12 col-md-8 offset-md-2">
+      <h2>Become a Host</h2>
+      <form
+        method="POST"
+        action="/listings"
+        novalidate
+        class="needs-validation"
+        enctype="multipart/form-data"
+      >
         <div class="mb-3">
           <label for="title" class="form-label">Title</label>
           <input
@@ -75,8 +81,148 @@
           />
           <div class="invalid-feedback">Location should be valid!</div>
         </div>
-        <button class="btn add-btn">Add</button>
+        <div class="mb-3">
+          <label class="form-label">Select Categories</label>
+          <div class="d-flex flex-wrap gap-3">
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                name="category[]"
+                value="Room"
+                id="catRoom"
+              />
+              <label class="form-check-label" for="catRoom">Room</label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                name="category[]"
+                value="Iconic cities"
+                id="catCities"
+              />
+              <label class="form-check-label" for="catCities"
+                >Iconic cities</label
+              >
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                name="category[]"
+                value="Mountains"
+                id="catMountains"
+              />
+              <label class="form-check-label" for="catMountains"
+                >Mountains</label
+              >
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                name="category[]"
+                value="Castles"
+                id="catCastles"
+              />
+              <label class="form-check-label" for="catCastles">Castles</label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                name="category[]"
+                value="Amazing pools"
+                id="catPools"
+              />
+              <label class="form-check-label" for="catPools"
+                >Amazing pools</label
+              >
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                name="category[]"
+                value="Camping"
+                id="catCamping"
+              />
+              <label class="form-check-label" for="catCamping">Camping</label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                name="category[]"
+                value="Beach"
+                id="catBeach"
+              />
+              <label class="form-check-label" for="catBeach">Beach</label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                name="category[]"
+                value="Farms"
+                id="catFarms"
+              />
+              <label class="form-check-label" for="catFarms">Farms</label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                name="category[]"
+                value="Arctic"
+                id="catArctic"
+              />
+              <label class="form-check-label" for="catArctic">Arctic</label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                name="category[]"
+                value="Boats"
+                id="catBoats"
+              />
+              <label class="form-check-label" for="catBoats">Boats</label>
+            </div>
+          </div>
+          <div class="invalid-feedback">
+            Please choose at least one category!
+          </div>
+        </div>
+
+        <button class="btn add-btn">Create a Listing</button>
       </form>
     </div>
   </div>
-</body>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const form = document.querySelector(".needs-validation");  
+    const categoryInputs = document.querySelectorAll('input[name="category[]"]');
+
+    form.addEventListener("submit", (event) => {
+
+      const checked = [...categoryInputs].some((checkbox) => checkbox.checked);
+
+      if (!checked) {
+        event.preventDefault();   
+          categoryInputs[0]
+          .closest(".mb-3")
+          .querySelector(".invalid-feedback").style.display = "block";
+      } else {
+      
+        categoryInputs[0]
+          .closest(".mb-3")
+          .querySelector(".invalid-feedback").style.display = "none";
+      }
+
+      
+      form.classList.add("was-validated");
+    });
+  });
+</script>

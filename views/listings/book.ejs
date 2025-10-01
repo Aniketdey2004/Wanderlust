@@ -1,90 +1,118 @@
 <%layout("/layouts/boilerplate.ejs")%>
-<div class="row mt-4 mb-5">
-  <div class="col-8 offset-2">
-    <form
-      class="needs-validation book-form"
-      novalidate
-    >
-      <div class="mb-3">
-        <label for="from" class="form-label">From</label>
-        <input
-          type="date"
-          name="from"
-          id="from"
-          class="form-control"
-          required
-        />
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-7">
+      <div class="card shadow-sm mb-2">
+        <div
+          class="card-img-top rounded booking-img"
+          style="background-image: url('<%= listing.image.url %>')"
+        ></div>
+        <div class="card-body">
+          <h2 class="card-title"><%=listing.title%></h2>
+          <p class="text-muted mb-1">
+            <%=listing.location%>, <%=listing.country%>
+          </p>
+          <p class="fs-4 fw-bold">
+            ₹ <%=listing.price.toLocaleString('en-IN')%> / night
+          </p>
+          <p><%=listing.description%></p>
+        </div>
       </div>
-      <div class="mb-3">
-        <label for="to" class="form-label">To</label>
-        <input type="date" name="to" id="to" class="form-control" required />
+    </div>
+    <div class="col-md-5 mb-2">
+      <div class="card shadow-lg p-4">
+        <h4 class="mb-3">Book Your Stay</h4>
+        <form class="needs-validation book-form" novalidate>
+          <div class="mb-3">
+            <label for="from" class="form-label">From</label>
+            <input
+              type="date"
+              name="from"
+              id="from"
+              class="form-control"
+              required
+            />
+            <div class="invalid-feedback">Provide Booking Dates!</div>
+          </div>
+          <div class="mb-3">
+            <label for="to" class="form-label">To</label>
+            <input
+              type="date"
+              name="to"
+              id="to"
+              class="form-control"
+              required
+            />
+            <div class="invalid-feedback">Provide Booking Dates!</div>
+          </div>
+          <button type="submit" class="btn form-btn w-100 py-2">
+            Confirm Booking
+          </button>
+        </form>
       </div>
-      <button type="submit" class="btn btn-danger form-btn">Confirm Booking</button>
-    </form>
+    </div>
   </div>
 </div>
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
-const listing = <%- JSON.stringify(listing) %>;
+    let listing=<%-JSON.stringify(listing)%>;
+      let form = document.querySelector('.book-form');
 
-// Select the form instead of the button
-let form = document.querySelector('.book-form');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const from = document.getElementById('from').value;
+    const to = document.getElementById('to').value;
+    if(from && to){
+      const response = await fetch('/payment/createBooking', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ amount: listing.price })
+    });
 
-form.addEventListener('submit', async (e) => {
-  e.preventDefault(); // prevent default form submission
-
-  // Create Razorpay order on your server
-  const response = await fetch('/payment/createBooking', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ amount: listing.price })
-  });
-
-  if (!response.ok) {
-    alert("Error creating payment order.");
-    window.location.href = `/listings/<%= listing._id %>`;
-    return;
-  }
-
-  const order = await response.json();
-
-  const options = {
-    key: "<%= process.env.RAZORPAY_KEY %>",
-    amount: order.amount,
-    currency: order.currency,
-    name: "Wanderlust",
-    description: "Booking Payment",
-    order_id: order.id,
-    handler: async function (response) {
-      // Only after successful payment, send booking request
-      const from = document.getElementById('from').value;
-      const to = document.getElementById('to').value;
-
-      const res = await fetch(`/listings/<%= listing._id %>/book`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          from,
-          to,
-          paymentId: response.razorpay_payment_id,
-          orderId: response.razorpay_order_id,
-          signature: response.razorpay_signature
-        })
-      });
-
-      if (res.ok) {
-        alert("Booking and payment successful!");
-        window.location.href = `/listings/<%= listing._id %>`;
-      } else {
-        alert("Booking failed. Please contact support.");
-        window.location.href = `/listings/<%= listing._id %>`;
-      }
+    if (!response.ok) {
+      alert("Error creating payment order.");
+      window.location.href = `/listings/<%= listing._id %>`;
+      return;
     }
-  };
 
-  const rzp = new Razorpay(options);
-  rzp.open();
-  return false;
-});
+    const order = await response.json();
+
+    const options = {
+      key: "<%= process.env.RAZORPAY_KEY %>",
+      amount: order.amount,
+      currency: order.currency,
+      name: "Wanderlust",
+      description: "Booking Payment",
+      order_id: order.id,
+      handler: async function (response) {
+        const from = document.getElementById('from').value;
+        const to = document.getElementById('to').value;
+
+        const res = await fetch(`/listings/<%= listing._id %>/book`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            from,
+            to,
+            paymentId: response.razorpay_payment_id,
+            orderId: response.razorpay_order_id,
+            signature: response.razorpay_signature
+          })
+        });
+
+        if (res.ok) {
+          alert("Booking and payment successful!");
+          window.location.href = `/listings/<%= listing._id %>`;
+        } else {
+          alert("Booking failed. Please contact support");
+          window.location.href = `/listings/<%= listing._id %>`;
+        }
+      }
+    };
+
+    const rzp = new Razorpay(options);
+    rzp.open();
+    }
+  });
 </script>

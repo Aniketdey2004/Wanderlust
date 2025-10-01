@@ -4,8 +4,18 @@ const mapToken=process.env.MAP_TOKEN;
 const geocodingClient = mbxGeocoding({ accessToken: mapToken });
 
 module.exports.index=async (req,res)=>{
-    const allListings=await Listing.find({});
-    res.render("listings/index.ejs",{allListings});
+    let perPage=9;
+    let page=parseInt(req.query.page) || 1;
+    let filter={};
+    if(req.query.category){
+        filter.category=req.query.category;
+    }
+
+    const totalListings=await Listing.countDocuments(filter);
+
+    const listings=await Listing.find(filter).skip(perPage*(page-1)).limit(perPage);
+
+    res.render("listings/index.ejs",{allListings:listings,currentPage:page,totalPages: Math.ceil(totalListings/perPage),category:req.query.category||null});
 }
 
 module.exports.renderNewForm=async (req,res)=>{
@@ -73,6 +83,7 @@ module.exports.updateListing=async (req,res)=>{
 module.exports.renderbookListing=async (req,res)=>{
     let {id}=req.params;
     let listing=await Listing.findById(id);
+    console.log(listing);
     if(!listing)
     {
         req.flash("error","Listing you are looking for does not exist");
@@ -89,9 +100,9 @@ module.exports.bookListing=async (req,res)=>{
     if(!listing){
         res.status(400).send("Listing does not exist");
     }
-    if(from===undefined || to===undefined)
+    if(!from || !to)
     {
-        res.status(400).send("Bad booking request");
+        return res.status(400).send("Bad booking request");
     }
     listing.bookings.push(booking);
     let bookedListing=await listing.save();

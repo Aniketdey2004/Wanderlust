@@ -1,53 +1,98 @@
 <%layout("/layouts/boilerplate.ejs")%>
+<script>
+  const listings=<%-JSON.stringify(allListings)%>;
+</script>
+<div class="d-xxl-none mb-2 mt-4">
+  <button
+    class="btn filter-btn w-100"
+    type="button"
+    data-bs-toggle="collapse"
+    data-bs-target="#filtersCollapse"
+    aria-expanded="false"
+    aria-controls="filtersCollapse"
+  >
+    <i class="fa-solid fa-sliders"></i> Filters
+  </button>
+</div>
 
-<div id="filters">
-  <div class="filter">
-      <div><i class="fa-solid fa-fire"></i></div>
-      <p>Trending</p>
-  </div>
-  <div class="filter">
-      <div><i class="fa-solid fa-bed"></i></div>
-      <p>Room</p>
-  </div>
-  <div class="filter">
-      <div><i class="fa-solid fa-mountain-city"></i></div>
-      <p>Iconic cities</p>
-  </div>
-  <div class="filter">
-      <div><i class="fa-solid fa-mountain"></i></div>
-      <p>Mountains</p>
-  </div>
-  <div class="filter">
-      <div><i class="fa-brands fa-fort-awesome"></i></div>
-      <p>Castles</p>
-  </div>
-  <div class="filter">
-      <div><i class="fa-solid fa-person-swimming"></i></div>
-      <p>Amazing pools</p>
-  </div>
-  <div class="filter">
-      <div><i class="fa-solid fa-campground"></i></div>
-      <p>Camping</p>
-  </div>
-  <div class="filter">
-      <div><i class="fa-solid fa-tractor"></i></div>
-      <p>Farms</p>
-  </div>
-  <div class="filter">
-      <div><i class="fa-solid fa-snowflake"></i></div>
-      <p>Arctic</p>
-  </div>
-  <div class="filter">
-      <div><i class="fa-solid fa-sailboat"></i></div>
-      <p>Boats</p>
-  </div>
-  <div class="tax-toggle">
-    <div class="form-check form-switch form-check-reverse">
-      <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
-      <label class="form-check-label" for="switchCheckDefault">Display total after taxes</label>
+<div class="collapse d-xxl-block mt-4" id="filtersCollapse">
+  <div id="filters" class="p-2">
+    <a href="/listings?category=Room">
+      <div class="filter">
+        <div><i class="fa-solid fa-bed"></i></div>
+        <p>Room</p>
+      </div>
+    </a>
+    <a href="/listings?category=Beach">
+      <div class="filter">
+        <div><i class="fa-solid fa-umbrella-beach"></i></div>
+        <p>Beach</p>
+      </div>
+    </a>
+    <a href="/listings?category=Iconic%20cities">
+      <div class="filter">
+        <div><i class="fa-solid fa-mountain-city"></i></div>
+        <p>Iconic cities</p>
+      </div>
+    </a>
+    <a href="/listings?category=Mountains">
+      <div class="filter">
+        <div><i class="fa-solid fa-mountain"></i></div>
+        <p>Mountains</p>
+      </div>
+    </a>
+    <a href="/listings?category=Castles">
+      <div class="filter">
+        <div><i class="fa-brands fa-fort-awesome"></i></div>
+        <p>Castles</p>
+      </div>
+    </a>
+    <a href="/listings?category=Amazing%20pools">
+      <div class="filter">
+        <div><i class="fa-solid fa-person-swimming"></i></div>
+        <p>Amazing pools</p>
+      </div>
+    </a>
+    <a href="/listings?category=Camping">
+      <div class="filter">
+        <div><i class="fa-solid fa-campground"></i></div>
+        <p>Camping</p>
+      </div>
+    </a>
+    <a href="/listings?category=Farms">
+      <div class="filter">
+        <div><i class="fa-solid fa-tractor"></i></div>
+        <p>Farms</p>
+      </div>
+    </a>
+    <a href="/listings?category=Arctic">
+      <div class="filter">
+        <div><i class="fa-solid fa-snowflake"></i></div>
+        <p>Arctic</p>
+      </div>
+    </a>
+    <a href="/listings?category=Boats">
+      <div class="filter">
+        <div><i class="fa-solid fa-sailboat"></i></div>
+        <p>Boats</p>
+      </div>
+    </a>
+    <div class="tax-toggle">
+      <div class="form-check form-switch form-check-reverse">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          role="switch"
+          id="switchCheckDefault"
+        />
+        <label class="form-check-label" for="switchCheckDefault"
+          >Display total after taxes</label
+        >
+      </div>
     </div>
   </div>
 </div>
+
 <div class="row row-cols-lg-3 row-cols-md-2 row-cols-1 mt-3">
   <%for(item of allListings){%>
   <a href="/listings/<%=item._id%>" class="listing-link">
@@ -60,27 +105,67 @@
       />
       <div class="card-img-overlay"></div>
       <div class="card-body listing-card-body">
-        <h5 class="card-title"><%=item.title%></h5>
-        <p class="card-text">
+        <h4 class="card-title"><%=item.title%></h4>
+        <p class="card-text text-muted">
+          <%=item.location%>, <%=item.country%>
+        </p>
+        <p class="card-text fs-6 fw-bold listing-price">
           &#8377;<%=item.price.toLocaleString('en-IN')%> / night
-          <i class="tax-info">&nbsp; &nbsp; +18% GST</i>
         </p>
       </div>
     </div>
   </a>
   <%}%>
 </div>
+<nav aria-label="Listings pagination">
+  <ul class="pagination justify-content-center mt-4">
+    <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
+      <a
+        class="page-link"
+        href="/listings?page=<%= currentPage - 1 %><%if(category){%>&category=<%=category%><%}%>"
+        >Previous</a
+      >
+    </li>
+    <% for(let i = 1; i <= totalPages; i++) { %>
+    <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+      <a
+        class="page-link"
+        href="/listings?page=<%= i %><%if(category){%>&category=<%=category%><%}%>"
+        ><%= i %></a
+      >
+    </li>
+    <% } %>
+    <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
+      <a
+        class="page-link"
+        href="/listings?page=<%= currentPage + 1 %><%if(category){%>&category=<%=category%><%}%>"
+        >Next</a
+      >
+    </li>
+  </ul>
+</nav>
 <script>
-  let taxSwitch=document.querySelector("#switchCheckDefault");
-  taxSwitch.addEventListener("click",()=>{
-    let taxinfo=document.getElementsByClassName("tax-info");
-    for(let info of taxinfo){
-      if(info.style.display!="inline"){
-        info.style.display="inline";
+  let taxSwitch = document.querySelector("#switchCheckDefault");
+  let taxes = false;
+  taxSwitch.addEventListener("click", () => {
+    if (!taxes) {
+      let price = document.querySelectorAll(".listing-price");
+      for (let i = 0; i < price.length; i++) {
+        let newPrice = listings[i].price + listings[i].price * 0.18;
+        price[i].innerHTML = `&#8377;${newPrice.toLocaleString(
+          "en-IN"
+        )} / night`;
       }
-      else{
-        info.style.display="none";
+      taxes = true;
+    } else {
+      let price = document.querySelectorAll(".listing-price");
+      for (let i = 0; i < price.length; i++) {
+        let newPrice = listings[i].price;
+        price[i].innerHTML = `&#8377;${newPrice.toLocaleString(
+          "en-IN"
+        )} / night`;
       }
+      taxes = false;
     }
-  })
+  });
 </script>
