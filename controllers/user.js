@@ -51,15 +51,21 @@ module.exports.getUser = (req, res) => {
 };
 
 module.exports.getListings = async (req, res) => {
-  let userListing = await Listing.find({ owner: req.user._id });
-  res.render("users/listing.ejs", { userListing });
+  let perPage=9;
+  let page=parseInt(req.query.page)||1;
+  const totalListings=await Listing.countDocuments({owner:req.user._id});
+  let userListing = await Listing.find({ owner: req.user._id }).skip(perPage*(page-1)).limit(perPage);
+  res.render("users/listing.ejs", { userListing ,currentPage:page,totalPages:Math.ceil(totalListings/perPage)});
 };
 
 module.exports.getReviews = async (req, res) => {
+  let perPage=9;
+  let page=parseInt(req.query.page)||1;
+  const totalReviews=await Review.countDocuments({author:req.user._id});
   let userReviews = await Review.find({ author: req.user._id }).populate(
     "listing"
-  );
-  res.render("users/reviews.ejs", { userReviews });
+  ).skip(perPage*(page-1)).limit(perPage);
+  res.render("users/reviews.ejs", { userReviews ,currentPage:page,totalPages:Math.ceil(totalReviews/perPage)});
 };
 
 module.exports.getBookings = async (req, res) => {
@@ -70,6 +76,7 @@ module.exports.getBookings = async (req, res) => {
       if (books.userid.equals(req.user._id)) {
         bookings.push({
           _id: listing._id,
+          image:listing.image.url,
           title: listing.title,
           from: books.from,
           to: books.to,
@@ -78,7 +85,11 @@ module.exports.getBookings = async (req, res) => {
       }
     }
   }
-  res.render("users/bookings.ejs", { bookings });
+  let totalBookings=bookings.length;
+  let perPage=9;
+  let page=parseInt(req.query.page)|| 1;
+  let books=bookings.slice(perPage*(page-1),perPage*(page-1)+9);
+  res.render("users/bookings.ejs", { bookings:books,currentPage:page,totalPages:Math.ceil(totalBookings/perPage)});
 };
 
 module.exports.getCustomers = async (req, res) => {
@@ -90,11 +101,15 @@ module.exports.getCustomers = async (req, res) => {
         ...booking.toObject(),
         title: listing.title,
         id: listing._id,
+        image:listing.image.url
       });
     }
   }
-  console.log(bookings);
-  res.render("users/customers.ejs", { bookings });
+  let totalCustomers=bookings.length;
+  let perPage=9;
+  let page=parseInt(req.query.page)|| 1;
+  let customers=bookings.slice(perPage*(page-1),perPage*(page-1)+9);
+  res.render("users/customers.ejs", { bookings:customers,currentPage:page,totalPages:Math.ceil(totalCustomers/perPage) });
 };
 
 module.exports.findUser = async (req, res) => {
@@ -104,5 +119,5 @@ module.exports.findUser = async (req, res) => {
     res.flash("error", "user does not exist");
     return res.redirect("/listings");
   }
-  res.render("users/user.ejs", { user });
+  res.render("users/profile.ejs", { user });
 };

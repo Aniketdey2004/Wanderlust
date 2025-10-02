@@ -1,19 +1,55 @@
 <%layout("/layouts/boilerplate.ejs")%>
-<h2 class="mt-3">Your Bookings</h2>
+<h2 class="mt-4">Bookings Overview</h2>
 <%if(bookings.length>0){%>
 <div class="row row-cols-lg-3 row-cols-md-2 row-cols-1 mt-3">
-  <%for(booking of bookings){%>
-    <div class="card col">
+  <% for (booking of bookings) { %>
+  <div class="col mb-4">
+    <div class="card book-card h-100">
+      <img src="<%= booking.image %>" class="card-img-top book-img" alt="..." />
       <div class="card-body">
-        <h5 class="card-title"><%=booking.title%></h5>
-        <p class="card-text">From:<%=booking.from.toLocaleDateString()%></p>
-        <p class="card-text">To:<%=booking.to.toLocaleDateString()%></p>
-         <a href="/listings/<%=booking._id%>" class="btn btn-danger">See Listing</a>
+        <h5 class="card-title"><%= booking.title %></h5>
+        <p class="card-text"><b>From:</b> <%= booking.from.toLocaleDateString() %></p>
+        <p class="card-text"><b>To:</b> <%= booking.to.toLocaleDateString() %></p>
+        <div class="booking-btns">
+          <form action="/listings/<%=booking._id%>/book?_method=DELETE" method="post">
+            <button class="btn del-btn">Cancel Booking</button>
+          </form>
+          <a href="/listings/<%= booking._id %>" class="btn seelisting"
+            >See Listing</a
+          >
+        </div>
       </div>
     </div>
-  <%}%>
+  </div>
+  <% } %>
 </div>
+<%}%> <%if(bookings.length==0){%>
+<h4 class="text-muted">No Bookings made</h4>
 <%}%>
-<%if(bookings.length==0){%>
-  <h4>No Bookings made</h4>
-<%}%>
+<nav aria-label="Listings pagination">
+  <ul class="pagination justify-content-center mt-4">
+    <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
+      <a
+        class="page-link"
+        href="/user/bookings?page=<%= currentPage - 1 %>"
+        >Previous</a
+      >
+    </li>
+    <% for(let i = 1; i <= totalPages; i++) { %>
+    <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+      <a
+        class="page-link"
+        href="/user/bookings?page=<%= i %>"
+        ><%= i %></a
+      >
+    </li>
+    <% } %>
+    <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
+      <a
+        class="page-link"
+        href="/user/bookings?page=<%= currentPage + 1 %>"
+        >Next</a
+      >
+    </li>
+  </ul>
+</nav>

@@ -167,7 +167,11 @@ a {
 .filter-btn,
 .del-btn,
 .review-btn,
-.show-review
+.show-,
+.signup,
+.login-btn,
+.seelisting,
+.visitor
 {
   background: linear-gradient(90deg, #ff416c, #ff4b2b);
   color: white;
@@ -178,7 +182,12 @@ a {
 .filter-btn:hover,
 .del-btn:hover,
 .review-btn:hover,
-.show-review:hover{
+.show-review:hover,
+.signup:hover,
+.login-btn:hover,
+.seelisting:hover,
+.visitor:hover
+{
   background-color: #fe424d;
   color: #ffffff98;
 }
@@ -296,4 +305,114 @@ a {
 
 .maker {
   text-align: center;
+}
+
+
+/* signup */
+.form-title{
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.9rem;
+  color: #fe424d;
+  text-align: center;
+}
+.form-title span{
+  color: #333;
+}
+
+.form-subtitle{
+  font-size: 1.5rem;
+  text-align: center;
+  color: #666;
+}
+.entry-gateways{
+  color: #333;
+  margin-top: 1rem;
+}
+/* login */
+
+.login-title{
+  font-size: 2rem;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #fe424d;
+  text-align: center;
+}
+.login-title span{
+  color: #333;
+}
+@media only screen and (max-width:450px){
+  .login-title{
+    font-size: 1.5rem;
+  }
+}
+
+/* Bookings */
+.book-img{
+  width: 100%;
+  object-fit: cover;
+  height: 15rem;
+  border-top-left-radius: 1.5rem;
+  border-top-right-radius: 1.5rem;
+}
+.book-card{
+  border-radius: 1.5rem;
+}
+.booking-btns{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+/* own listings */
+.own-listing-card{
+  border-radius: 1.5rem;
+
+}
+.own-listing-img{
+  width: 100%;
+  object-fit: cover;
+  height: 15rem;
+  border-top-left-radius: 1.5rem;
+  border-top-right-radius: 1.5rem;
+}
+
+/* own reviews */
+.review-buttons{
+  display: flex;
+  gap: 1rem;
+}
+.review-card{
+  height: 100%;
+}
+
+
+/* profile */
+
+.profile{
+  min-height:50vh;
+  border-radius: 1rem;
+}
+.profile-left{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1rem;
+}
+.profile-right{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1rem;
+}
+.profile-btns{
+  display: flex;
+  justify-content: flex-start;
+  
+}
+@media only screen and (max-width:992px){
+  .profile-btns{
+    justify-content: center;
+  }
 }

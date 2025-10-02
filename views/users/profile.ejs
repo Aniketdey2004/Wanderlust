@@ -1,12 +1,36 @@
 <%layout("/layouts/boilerplate.ejs")%>
-<div class="mt-3">
-    <img src="<%=user.picture.url%>" alt="profile picture">
-    <p>Username:&nbsp;<%=user.username%></p>
-    <p>email: &nbsp; <%=user.email%></p>
-    <p>Phone:&nbsp; <%=user.Phone%></p>
-    <p>About: &nbsp; <%=user.About%></p>
-    <a href="/user/listings">Manage your listings</a>
-    <a href="/user/reviews">See your reviews</a>
-    <a href="/user/bookings">See your bookings</a>
-    <a href="/user/customers">Manage your customers</a>
+<div class="container">
+  <div class="row mt-4 profile shadow">
+    <div class="col-12 col-md-6 profile-left">
+      <img
+        src="<%= user.picture.url %>"
+        alt="Profile Picture"
+        class="rounded-circle border border-3 border-white shadow mb-3"
+        style="width: 170px; height: 170px; object-fit: cover"
+      />
+      <h4><%=user.username%></h4>
+      <p class="text-secondary fst-italic text-align-center"><%=user.About%></p>
+    </div>
+    <div class="col-12 col-md-6 profile-right">
+      <h3 class="mb-3">Contact Information</h3>
+      <p><i class="fa-solid fa-phone"></i>&nbsp;&nbsp;<%=user.Phone%></p>
+      <p><i class="fa-solid fa-envelope"></i>&nbsp;&nbsp;<%=user.email%></p>
+      <%if(currUser && currUser._id.equals(user._id)){%>
+      <div class="d-flex flex-wrap gap-3 mt-3 profile-btns">
+        <a href="/user/listings" class="btn btn-outline-danger">
+          <i class="bi bi-houses"></i> Listings
+        </a>
+        <a href="/user/reviews" class="btn btn-outline-danger">
+          <i class="bi bi-star"></i> Reviews
+        </a>
+        <a href="/user/bookings" class="btn btn-outline-danger">
+          <i class="bi bi-journal-check"></i> Bookings
+        </a>
+        <a href="/user/customers" class="btn btn-outline-danger">
+          <i class="bi bi-people"></i> Customers
+        </a>
+      </div>
+      <%}%>
+    </div>
+  </div>
 </div>

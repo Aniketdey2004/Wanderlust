@@ -83,7 +83,6 @@ module.exports.updateListing=async (req,res)=>{
 module.exports.renderbookListing=async (req,res)=>{
     let {id}=req.params;
     let listing=await Listing.findById(id);
-    console.log(listing);
     if(!listing)
     {
         req.flash("error","Listing you are looking for does not exist");
@@ -112,6 +111,17 @@ module.exports.bookListing=async (req,res)=>{
     else{
         res.status(500).send("Error in creating booking");
     }
+}
+module.exports.destroyBooking=async (req,res)=>{
+    let {id}=req.params;
+    let listing=await Listing.findByIdAndUpdate(id,{$pull:{bookings:{userid:req.user._id}}},{new:true});
+    if(listing){
+        req.flash("success","Booking removed");
+    }
+    else{
+        req.flash("error","Failed to remove booking");
+    }
+    res.redirect("/user/bookings");
 }
 
 module.exports.destroyListing=async (req,res)=>{

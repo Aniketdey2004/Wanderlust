@@ -3,7 +3,7 @@
     const listing=<%-JSON.stringify(listing)%>;
   </script>
   <div class="row mt-4">
-    <div class="col-12 col-md-8 offset-md-2 ">
+    <div class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2 ">
       <h2>Edit Your Listing</h2>
       <form method="POST" action="/listings/<%=listing._id%>?_method=PUT" class="needs-validation" novalidate enctype="multipart/form-data">
         <div class="mb-3">

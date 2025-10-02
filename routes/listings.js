@@ -27,6 +27,7 @@ router.route("/:id")
 
 router.route("/:id/book")
 .get(isLoggedIn,wrapAsync(listingController.renderbookListing))
-.post(isLoggedIn,verifyPayment,wrapAsync(listingController.bookListing));
+.post(isLoggedIn,verifyPayment,wrapAsync(listingController.bookListing))
+.delete(isLoggedIn,wrapAsync(listingController.destroyBooking));
 
 module.exports=router;

@@ -1,25 +1,48 @@
 <%layout("/layouts/boilerplate.ejs")%>
-<h2 class="mt-3">Your Listings</h2>
+<h2 class="mt-4">Hosted Properties</h2>
 <%if(userListing.length>0){%>
 <div class="row row-cols-lg-3 row-cols-md-2 row-cols-1 mt-3">
   <%for(listing of userListing){%>
-  <a href="/listings/<%=listing._id%>" class="listing-link">
-    <div class="card col listing-card">
-      <img
-        src="<%=listing.image.url%>"
-        class="card-img-top listing-img"
-        alt="listing Image"
-        style="height: 20rem"
-      />
-      <div class="card-img-overlay"></div>
-      <div class="card-body listing-card-body">
-        <h5 class="card-title"><%=listing.title%></h5>
+  <div class="col mb-4">  
+      <div class="card own-listing-card h-100">
+        <img src="<%= listing.image.url %>" class="card-img-top own-listing-img" alt="...">
+        <div class="card-body">
+          <h5 class="card-title"><%=listing.title%></h5>
+          <p class="card-text text-muted mb-2"><%=listing.description%></p>
+          <a href="/listings/<%= listing._id %>" class="btn seelisting">See Listing</a>
+        </div>
       </div>
     </div>
-  </a>
   <%}%>
 </div>
 <%}%>
 <%if(userListing.length==0){%>
-  <h4>No Listings Added</h4>
+  <h4 class="text-muted">No Listings Added</h4>
 <%}%>
+<nav aria-label="Listings pagination">
+  <ul class="pagination justify-content-center mt-4">
+    <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
+      <a
+        class="page-link"
+        href="/user/listings?page=<%= currentPage - 1 %>"
+        >Previous</a
+      >
+    </li>
+    <% for(let i = 1; i <= totalPages; i++) { %>
+    <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+      <a
+        class="page-link"
+        href="/user/listings?page=<%= i %>"
+        ><%= i %></a
+      >
+    </li>
+    <% } %>
+    <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
+      <a
+        class="page-link"
+        href="/user/listings?page=<%= currentPage + 1 %>"
+        >Next</a
+      >
+    </li>
+  </ul>
+</nav>
