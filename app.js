@@ -90,6 +90,10 @@ app.use("/",userRouter);
 //payment router
 app.use("/payment",paymentRouter);
 
+app.get("/about",(req,res)=>{
+    res.render("about.ejs");
+});
+
 //Matching Unmatched Route
 app.all(/.*/,(req,res,next)=>{
     throw new ExpressError(404,"Page Not Found");
