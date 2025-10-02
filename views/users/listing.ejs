@@ -15,10 +15,6 @@
     </div>
   <%}%>
 </div>
-<%}%>
-<%if(userListing.length==0){%>
-  <h4 class="text-muted">No Listings Added</h4>
-<%}%>
 <nav aria-label="Listings pagination">
   <ul class="pagination justify-content-center mt-4">
     <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
@@ -46,3 +42,7 @@
     </li>
   </ul>
 </nav>
+<%}%>
+<%if(userListing.length==0){%>
+  <h4 class="text-muted">No Listings Added</h4>
+<%}%>

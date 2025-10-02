@@ -21,9 +21,6 @@
   </div>
   <%}%>
 </div>
-<%}%> <%if(bookings.length==0){%>
-<h4 class="text-muted">No Visitors yet</h4>
-<%}%>
 <nav aria-label="Listings pagination">
   <ul class="pagination justify-content-center mt-4">
     <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
@@ -51,3 +48,6 @@
     </li>
   </ul>
 </nav>
+<%}%> <%if(bookings.length==0){%>
+<h4 class="text-muted">No Visitors yet</h4>
+<%}%>
