@@ -11,7 +11,7 @@ module.exports.signUp = async (req, res) => {
     let url = req.file.path;
     let filename = req.file.filename;
     let { username, email, password, Phone, About } = req.body;
-    let newUser = new User({ email, username, Phone, About });
+    const newUser = new User({ email, username, Phone, About });
     newUser.picture = { url, filename };
     let registeredUser = await User.register(newUser, password);
     req.login(registeredUser, (err) => {
@@ -51,26 +51,26 @@ module.exports.getUser = (req, res) => {
 };
 
 module.exports.getListings = async (req, res) => {
-  let perPage=9;
-  let page=parseInt(req.query.page)||1;
+  const perPage=9;
+  const page=parseInt(req.query.page)||1;
   const totalListings=await Listing.countDocuments({owner:req.user._id});
-  let userListing = await Listing.find({ owner: req.user._id }).skip(perPage*(page-1)).limit(perPage);
+  const userListing = await Listing.find({ owner: req.user._id }).skip(perPage*(page-1)).limit(perPage);
   res.render("users/listing.ejs", { userListing ,currentPage:page,totalPages:Math.ceil(totalListings/perPage)});
 };
 
 module.exports.getReviews = async (req, res) => {
-  let perPage=9;
-  let page=parseInt(req.query.page)||1;
+  const perPage=9;
+  const page=parseInt(req.query.page)||1;
   const totalReviews=await Review.countDocuments({author:req.user._id});
-  let userReviews = await Review.find({ author: req.user._id }).populate(
+  const userReviews = await Review.find({ author: req.user._id }).populate(
     "listing"
   ).skip(perPage*(page-1)).limit(perPage);
   res.render("users/reviews.ejs", { userReviews ,currentPage:page,totalPages:Math.ceil(totalReviews/perPage)});
 };
 
 module.exports.getBookings = async (req, res) => {
-  let bookings = [];
-  let listings = await Listing.find({});
+  const bookings = [];
+  const listings = await Listing.find({});
   for (let listing of listings) {
     for (let books of listing.bookings) {
       if (books.userid.equals(req.user._id)) {
@@ -85,16 +85,16 @@ module.exports.getBookings = async (req, res) => {
       }
     }
   }
-  let totalBookings=bookings.length;
-  let perPage=9;
-  let page=parseInt(req.query.page)|| 1;
-  let books=bookings.slice(perPage*(page-1),perPage*(page-1)+9);
+  const totalBookings=bookings.length;
+  const perPage=9;
+  const page=parseInt(req.query.page)|| 1;
+  const books=bookings.slice(perPage*(page-1),perPage*(page-1)+9);
   res.render("users/bookings.ejs", { bookings:books,currentPage:page,totalPages:Math.ceil(totalBookings/perPage)});
 };
 
 module.exports.getCustomers = async (req, res) => {
-  let listings = await Listing.find({ owner: req.user._id });
-  let bookings = [];
+  const listings = await Listing.find({ owner: req.user._id });
+  const bookings = [];
   for (let listing of listings) {
     for (let booking of listing.bookings) {
       bookings.push({
@@ -105,16 +105,16 @@ module.exports.getCustomers = async (req, res) => {
       });
     }
   }
-  let totalCustomers=bookings.length;
-  let perPage=9;
-  let page=parseInt(req.query.page)|| 1;
-  let customers=bookings.slice(perPage*(page-1),perPage*(page-1)+9);
+  const totalCustomers=bookings.length;
+  const perPage=9;
+  const page=parseInt(req.query.page)|| 1;
+  const customers=bookings.slice(perPage*(page-1),perPage*(page-1)+9);
   res.render("users/customers.ejs", { bookings:customers,currentPage:page,totalPages:Math.ceil(totalCustomers/perPage) });
 };
 
 module.exports.findUser = async (req, res) => {
   let { id } = req.params;
-  let user = await User.findById(id);
+  const user = await User.findById(id);
   if (!user) {
     res.flash("error", "user does not exist");
     return res.redirect("/listings");

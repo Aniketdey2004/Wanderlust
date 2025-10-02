@@ -16,6 +16,10 @@ module.exports.isLoggedIn=(req,res,next)=>{
 module.exports.isOwner=async (req,res,next)=>{
     let {id}=req.params;
     const listing=await Listing.findById(id);
+    if(!listing){
+        req.flash("error","Listing you are looking for does not exist");
+        return res.redirect("/listings");
+    }
     if(!listing.owner.equals(res.locals.currUser._id))
     {
         req.flash("error","you are not owner");
@@ -27,6 +31,10 @@ module.exports.isOwner=async (req,res,next)=>{
 module.exports.isReviewAuthor=async (req,res,next)=>{
     let {id,reviewId}=req.params;
     const review=await Review.findById(reviewId);
+    if(!review){
+        req.flash("error","Review you are looking for does not exist");
+        return res.redirect("/user/reviews");
+    }
     if(!review.author.equals(res.locals.currUser._id))
     {
         req.flash("error","you are not the author of this review");
@@ -97,7 +105,6 @@ module.exports.verifyPayment=(req, res,next) => {
   const generatedSignature = hmac.digest("hex");
 
   if (generatedSignature === signature) {
-    console.log("Payment verified");
     next();
   } else {
     console.log("Payment False");

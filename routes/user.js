@@ -32,6 +32,6 @@ router.get("/user/customers",isLoggedIn,wrapAsync(userController.getCustomers));
 router.get("/user/:id",wrapAsync(userController.findUser));
 
 
-router.get("/logout",userController.logout);
+router.get("/logout",isLoggedIn,userController.logout);
 
 module.exports=router;

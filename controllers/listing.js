@@ -4,9 +4,9 @@ const mapToken=process.env.MAP_TOKEN;
 const geocodingClient = mbxGeocoding({ accessToken: mapToken });
 
 module.exports.index=async (req,res)=>{
-    let perPage=9;
-    let page=parseInt(req.query.page) || 1;
-    let filter={};
+    const perPage=9;
+    const page=parseInt(req.query.page) || 1;
+    const filter={};
     if(req.query.category){
         filter.category=req.query.category;
     }
@@ -23,14 +23,14 @@ module.exports.renderNewForm=async (req,res)=>{
 }
 
 module.exports.createListing=async (req,res)=>{
-    let response=await geocodingClient.forwardGeocode({
+    const response=await geocodingClient.forwardGeocode({
         query: req.body.location,
         limit: 1
     })
     .send();
     const newListing=req.body;
-    let url=req.file.path;
-    let filename=req.file.filename;
+    const url=req.file.path;
+    const filename=req.file.filename;
     newListing.image={url,filename};
     newListing.owner=req.user._id;
     newListing.geometry=response.body.features[0].geometry;
@@ -67,7 +67,7 @@ module.exports.showListing=async (req,res)=>{
 module.exports.updateListing=async (req,res)=>{
     let {id}=req.params;
     const updatedItem=req.body;
-    let updatedListing=await Listing.findByIdAndUpdate(id,{...updatedItem});
+    const updatedListing=await Listing.findByIdAndUpdate(id,{...updatedItem});
     if(req.file)
     {
         let url=req.file.path;
@@ -77,16 +77,18 @@ module.exports.updateListing=async (req,res)=>{
     }   
     if(updatedListing)
         req.flash("success","Listing updated Successfully!");
+    else
+        req.flash("error","Failed to update Listing");
     res.redirect(`/listings/${id}`);
 }
 
 module.exports.renderbookListing=async (req,res)=>{
     let {id}=req.params;
-    let listing=await Listing.findById(id);
+    const listing=await Listing.findById(id);
     if(!listing)
     {
         req.flash("error","Listing you are looking for does not exist");
-        return res.redirect("/listing");
+        return res.redirect("/listings");
     }
     res.render("listings/book.ejs",{listing});
 }
@@ -94,27 +96,22 @@ module.exports.renderbookListing=async (req,res)=>{
 module.exports.bookListing=async (req,res)=>{
     let {id}=req.params;
     let {from,to,paymentId,orderId}=req.body;
-    let booking={userid:req.user._id,from,to,paymentId,orderId};
-    let listing=await Listing.findById(id);
-    if(!listing){
-        res.status(400).send("Listing does not exist");
-    }
-    if(!from || !to)
-    {
-        return res.status(400).send("Bad booking request");
-    }
+    const booking={userid:req.user._id,from,to,paymentId,orderId};
+    const listing=await Listing.findById(id);
     listing.bookings.push(booking);
-    let bookedListing=await listing.save();
+    const bookedListing=await listing.save();
     if(bookedListing){
+        req.flash("success","Booking Successfull!");
         res.status(200).send("Successfull booking");
     }
     else{
+        req.flash("error","Booking Failed!");
         res.status(500).send("Error in creating booking");
     }
 }
 module.exports.destroyBooking=async (req,res)=>{
     let {id}=req.params;
-    let listing=await Listing.findByIdAndUpdate(id,{$pull:{bookings:{userid:req.user._id}}},{new:true});
+    const listing=await Listing.findByIdAndUpdate(id,{$pull:{bookings:{userid:req.user._id}}},{new:true});
     if(listing){
         req.flash("success","Booking removed");
     }
@@ -126,7 +123,7 @@ module.exports.destroyBooking=async (req,res)=>{
 
 module.exports.destroyListing=async (req,res)=>{
     let {id}=req.params;
-    let deletedItem=await Listing.findByIdAndDelete(id);
+    const deletedItem=await Listing.findByIdAndDelete(id);
     if(deletedItem)
         req.flash("success","Listing Deleted Successfully!");
     else
