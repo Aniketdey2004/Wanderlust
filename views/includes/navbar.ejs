@@ -1,55 +1,63 @@
-<nav class="navbar navbar-expand-lg border-bottom sticky-top bg-body-light"">
+<nav class="navbar navbar-expand-lg border-bottom bg-body-light">
   <div class="container-fluid">
     <a class="navbar-brand" href="/listings"
-      ><i class="fa-regular fa-compass"></i
-    ></a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      ><div class="logo">
+        <i class="fas fa-globe"></i>
+        <span class="script nav-logo">WanderLust</span>
+      </div>
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" href="/listings">Explore</a>
+          <a class="nav-link discover" href="/listings">Explore</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link discover" href="/About">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link discover" href="/contact">Contact</a>
         </li>
       </ul>
-      <div class="navbar-nav ms-auto">
-        <form class="d-flex" role="search">
-          <input
-            class="form-control me-2"
-            type="search"
-            placeholder="Search destinations"
-            aria-label="Search"
-            id="search-inp"
-          />
-          <button class="btn btn-search" type="submit">
-            <i class="fa-solid fa-magnifying-glass"></i>Search
-          </button>
-        </form>
-      </div>
       <ul class="navbar-nav ms-auto">
-        <%if(!currUser){%>
-          <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="/photos/user.png" alt="user picture" class="nav-user">
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle d-flex align-items-center gap-2"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <div
+              class="nav-user"
+              style="
+                background-image: url('<%= currUser ? currUser.picture.url : '/photos/user.png' %>');
+              "
+            ></div>
           </a>
           <ul class="dropdown-menu">
+            <% if (!currUser) { %>
             <li><a class="dropdown-item" href="/signup">SignUp</a></li>
             <li><a class="dropdown-item" href="/login">Login</a></li>
-          </ul>
-        </li>
-        <%}%> 
-        <%if(currUser){%>
-          <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="<%=currUser.picture.url%>" alt="user picture" class="nav-user">
-          </a>
-          <ul class="dropdown-menu">
+            <% } else { %>
             <li><a class="dropdown-item" href="/user">Profile</a></li>
             <li><a class="dropdown-item" href="/logout">Logout</a></li>
+            <% } %>
           </ul>
         </li>
-        <%}%>
-        <li class="nav-item"><a class="nav-link" href="/listings/new">Become a host</a></li>
+        <li class="nav-item">
+          <a class="nav-link" href="/listings/new">Become a host</a>
+        </li>
       </ul>
     </div>
   </div>

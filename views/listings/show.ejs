@@ -3,57 +3,81 @@
   const mapToken="<%=mapToken%>";
   const listing=<%-JSON.stringify(listing)%>;
 </script>
-<body>
-  <div class="row mt-4 mb-4">
-    <div class="col-10 col-md-6 offset-md-3 offset-1">
-      <h2><%=listing.title%></h2>
-      <div class="card listing-card">
-        <img
-          src="<%=listing.image.url%>"
-          class="card-img-top show-img"
-          alt="listing-image"
-        />
-        <div class="card-body listing-card-body">
-          <h6 class="card-subtitle mb-2 text-body-secondary">
-            <%=listing.description%>
-          </h6>
-          <p class="card-text">Owned by: <%=listing.owner.username%></p>
-          <p class="card-text">
-            &#8377;<%=listing.price.toLocaleString('en-IN')%>
-          </p>
-          <p class="card-text"><%=listing.location%></p>
-          <p class="card-text"><%=listing.country%></p>
-          <%if(currUser && currUser._id.equals(listing.owner._id)){%>
-          <div class="show-links">
-            <a href="/listings/<%=listing._id%>/edit" class="btn edit-btn"
-              >Edit</a
-            >
-            <form
-              method="post"
-              action="/listings/<%=listing._id%>?_method=DELETE"
-            >
-              <button class="btn del-btn ms-2">Delete</button>
-            </form>
+<div class="show-container">
+  <h2 class="mt-3 mb-3"><b><%=listing.title%></b></h2>
+  <div
+    id="show-img"
+    style="background-image: url('<%= listing.image.url %>')"
+  ></div>
+  <div class="mt-3">
+    <div class="row">
+      <div class="col-md-8">
+        <div class="card shadow-sm mb-2">
+          <div class="card-body">
+            <h2 class="card-title">About the Place</h2>
+            <p class="text-muted mb-1">
+              <%=listing.location%>, <%=listing.country%>
+            </p>
+            <p><%=listing.description%></p>
+            <%if(currUser && currUser._id.equals(listing.owner._id)){%>
+            <div class="show-links mb-3">
+              <a href="/listings/<%=listing._id%>/edit" class="btn edit-btn"
+                >Edit</a
+              >
+              <form
+                method="post"
+                action="/listings/<%=listing._id%>?_method=DELETE"
+              >
+                <button class="btn del-btn ms-2">Delete</button>
+              </form>
+            </div>
+            <%}%>
+            <div class="host">
+              <a href="/user/<%=listing.owner._id%>"
+                ><div
+                  class="host-img"
+                  style="
+                    background-image: url('<%=listing.owner.picture.url%>');
+                  "
+                ></div
+              ></a>
+              <h5>Hosted by <%=listing.owner.username%></h5>
+            </div>
           </div>
-          <%}%>
-          <%if(currUser){%>
-          <a href="/listings/<%=listing._id%>/book" class="btn btn-danger">Book</a>
-          <%}%>
+        </div>
+      </div>
+      <div class="col-md-4 mb-2">
+        <div class="card shadow-lg p-4">
+          <h4 class="mb-3">Book Your Stay</h4>
+          <p class="fs-4 fw-bold">
+            ₹ <%=listing.price.toLocaleString('en-IN')%> / night
+          </p>
+          <a
+            href="/listings/<%=listing._id%>/book"
+            class="btn form-btn w-100 py-2"
+          >
+            Book Place
+          </a>
         </div>
       </div>
     </div>
-    <div class="col-10 col-md-6 offset-md-3 offset-1">
-      <%if(currUser){%>
-      <hr />
-      <h4>Leave a Review</h4>
-      <form
-        method="post"
-        action="/listings/<%=listing._id%>/reviews"
-        class="needs-validation"
-        novalidate
-      >
-        <div class="mb-3">
-          <label for="rating" class="form-label">Rating</label>
+  </div>
+  <div class="mt-2">
+    <h3 class="mb-3">Where you'll be</h3>
+    <div id="map"></div>
+  </div>
+  <div class="mt-3">
+    <%if(currUser){%>
+    <hr />
+    <h4 class="mb-2">Leave a Review</h4>
+    <form
+      method="post"
+      action="/listings/<%=listing._id%>/reviews"
+      class="needs-validation"
+      novalidate
+    >
+      <div class="mb-1">
+        <label for="rating" class="form-label">Rate</label>
         <fieldset class="starability-grow">
           <input
             type="radio"
@@ -64,59 +88,139 @@
             checked
             aria-label="No rating."
           />
-          <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+          <input
+            type="radio"
+            id="first-rate1"
+            name="review[rating]"
+            value="1"
+          />
           <label for="first-rate1" title="Terrible">1 star</label>
-          <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+          <input
+            type="radio"
+            id="first-rate2"
+            name="review[rating]"
+            value="2"
+          />
           <label for="first-rate2" title="Not good">2 stars</label>
-          <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+          <input
+            type="radio"
+            id="first-rate3"
+            name="review[rating]"
+            value="3"
+          />
           <label for="first-rate3" title="Average">3 stars</label>
-          <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+          <input
+            type="radio"
+            id="first-rate4"
+            name="review[rating]"
+            value="4"
+          />
           <label for="first-rate4" title="Very good">4 stars</label>
-          <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+          <input
+            type="radio"
+            id="first-rate5"
+            name="review[rating]"
+            value="5"
+          />
           <label for="first-rate5" title="Amazing">5 stars</label>
         </fieldset>
-        </div>
-        <div class="mb-3">
-          <label for="comment" class="form-label">Add a comment</label>
-          <textarea
-            name="review[comment]"
-            id="comment"
-            rows="5"
-            cols="30"
-            class="form-control"
-            required
-          ></textarea>
-          <div class="invalid-feedback">Please add a comment!</div>
-        </div>
-        <button class="btn btn-outline-dark">Submit</button>
-      </form>
-      <%}%>
-      <hr />
-      <%if(listing.reviews.length>0){%>
-      <p><b>All Reviews</b></p>
-      <div class="row">
-        <%for(review of listing.reviews){%>
-        <div class="card col-10 col-md-5 ms-3 mb-3">
+      </div>
+      <div class="mb-3">
+        <label for="comment" class="form-label">Add a comment</label>
+        <textarea
+          name="review[comment]"
+          id="comment"
+          rows="5"
+          cols="30"
+          class="form-control"
+          required
+        ></textarea>
+        <div class="invalid-feedback">Please add a comment!</div>
+      </div>
+      <button class="btn review-btn">Submit</button>
+    </form>
+    <%}%>
+  </div>
+  <h3 class="mb-2 mt-3">All Reviews</h3>
+ <div class="listing-reviews row row-cols-1 row-cols-md-2 g-3 mt-2">
+  <% if (listing.reviews.length > 0) { %>
+    <% for (let i = 0; i <= Math.min(listing.reviews.length - 1, 5); i++) { %>
+      <div class="col">
+        <div class="card review h-100 shadow-sm">
           <div class="card-body">
-            <h5 class="card-title"><img src="<%=review.author.picture.url%>" alt="review creator"><%=review.author.username%></h5>
-            <p class="card-text"><%=review.createdAt.toLocaleDateString()%></p>
-            <p
-              class="starability-result card-text"
-              data-rating="<%=review.rating%>"
-            ></p>
-            <p class="card-text"><%=review.comment%></p>
+            <div class="review-owner d-flex align-items-center mb-2">
+              <a href="/user/<%=listing.reviews[i].author._id%>">
+                <div
+                  class="review-host-img me-2"
+                  style="background-image: url('<%=listing.reviews[i].author.picture.url%>')"
+                ></div>
+              </a>
+              <h5 class="mb-0"><%=listing.reviews[i].author.username%></h5>
+            </div>
+            <p class="card-text small text-muted mb-1">
+              Created At: <%=listing.reviews[i].createdAt.toLocaleDateString()%>
+            </p>
+            <p class="card-text review-rating mb-2">
+              <% for (let j = 1; j <= listing.reviews[i].rating; j++) { %>
+                <i class="fa-solid fa-star text-warning"></i>
+              <% } %>
+            </p>
+            <p class="card-text"><%=listing.reviews[i].comment%></p>
           </div>
         </div>
-        <%}%>
       </div>
-      <%}%>
-    </div>
-    <div class="col-10 col-md-6 offset-md-3 offset-1">
-      <h3>Where you'll be</h3>
-      <div id="map"></div>
-    </div>
-  </div>
-</body>
+    <% } %>
+  <% } else { %>
+    <p class="text-muted">No Reviews added</p>
+  <% } %>
+</div>
+<% if (listing.reviews.length > 6) { %>
+      <div class="mt-3">
+        <button class="btn show-review">Show all Reviews</button>
+      </div>
+    <% } %>
+</div>
+    
 <script src="/js/map.js"></script>
+<script>
+let btn = document.querySelector('.show-review');
 
+if (btn) {
+  btn.addEventListener('click', () => {
+    let listingReviews = document.querySelector('.listing-reviews'); 
+    for (let i = 6; i < listing.reviews.length; i++) {
+      let div = document.createElement('div');
+      div.classList.add('col');
+      let stars = "";
+      for (let j = 1; j <= listing.reviews[i].rating; j++) {
+        stars += `<i class="fa-solid fa-star text-warning"></i>`;
+      }
 
+      div.innerHTML = `
+        <div class="card review h-100 shadow-sm">
+          <div class="card-body">
+            <div class="review-owner d-flex align-items-center mb-2">
+              <a href="/user/${listing.reviews[i].author._id}">
+                <div
+                  class="review-host-img me-2"
+                  style="background-image: url('${listing.reviews[i].author.picture.url}')"
+                ></div>
+              </a>
+              <h5 class="mb-0">${listing.reviews[i].author.username}</h5>
+            </div>
+            <p class="card-text small text-muted mb-1">
+              Created At: ${new Date(listing.reviews[i].createdAt).toLocaleDateString()}
+            </p>
+            <p class="card-text review-rating mb-2">
+              ${stars}
+            </p>
+            <p class="card-text">${listing.reviews[i].comment}</p>
+          </div>
+        </div>`;
+
+      listingReviews.append(div);
+    }
+    btn.style.display = "none";
+  });
+}
+</script>
