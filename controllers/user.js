@@ -18,8 +18,10 @@ module.exports.signUp = async (req, res) => {
       if (err) {
         return next(err);
       }
-      req.flash("success", "Welcome to Wanderlust!");
-      res.redirect("/listings");
+      req.session.save(()=>{
+        req.flash("success", "Welcome to Wanderlust!");
+        res.redirect("/listings");
+      });
     });
   } catch (err) {
     req.flash("error", err.message);
@@ -41,7 +43,7 @@ module.exports.logout = (req, res, next) => {
     if (err) {
       return next(err);
     }
-    req.flash("success", "you logged out successfully");
+    req.flash("success", "Logged out successfully!");
     res.redirect("/listings");
   });
 };
