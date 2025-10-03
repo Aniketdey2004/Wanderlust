@@ -6,7 +6,7 @@ const userController=require('../controllers/user.js');
 const multer  = require('multer');
 const {storage}=require('../cloudConfig.js');
 const upload = multer({storage});
-const {validateUser,isLoggedIn}=require('../middleware.js');
+const {validateUser,isLoggedIn,removeExpires}=require('../middleware.js');
 
 router.route("/signup")
 .get(userController.renderSignupForm)
@@ -25,9 +25,9 @@ router.get("/user/listings",isLoggedIn,wrapAsync(userController.getListings));
 
 router.get("/user/reviews",isLoggedIn,wrapAsync(userController.getReviews));
 
-router.get("/user/bookings",isLoggedIn,wrapAsync(userController.getBookings));
+router.get("/user/bookings",isLoggedIn,removeExpires,wrapAsync(userController.getBookings));
 
-router.get("/user/customers",isLoggedIn,wrapAsync(userController.getCustomers));
+router.get("/user/customers",isLoggedIn,removeExpires,wrapAsync(userController.getCustomers));
 
 router.get("/user/:id",wrapAsync(userController.findUser));
 

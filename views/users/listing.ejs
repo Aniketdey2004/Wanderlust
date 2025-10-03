@@ -1,7 +1,7 @@
 <%layout("/layouts/boilerplate.ejs")%>
 <h2 class="mt-4">Hosted Properties</h2>
 <%if(userListing.length>0){%>
-<div class="row row-cols-lg-3 row-cols-md-2 row-cols-1 mt-3">
+<div class="row row-cols-lg-3 row-cols-md-2 row-cols-1 mt-3 ">
   <%for(listing of userListing){%>
   <div class="col mb-4">  
       <div class="card own-listing-card h-100">
@@ -9,7 +9,12 @@
         <div class="card-body">
           <h5 class="card-title"><%=listing.title%></h5>
           <p class="card-text text-muted mb-2"><%=listing.description%></p>
-          <a href="/listings/<%= listing._id %>" class="btn seelisting">See Listing</a>
+          <div class="own-listing-btns">
+            <form action="/listings/<%=listing._id%>/status?page=<%=currentPage%>&_method=PUT" method="post">
+              <button class="btn del-btn">Change Status</button>
+            </form>
+            <a href="/listings/<%= listing._id %>" class="btn seelisting">See Listing</a>
+          </div>
         </div>
       </div>
     </div>

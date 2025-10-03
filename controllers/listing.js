@@ -90,6 +90,10 @@ module.exports.renderbookListing=async (req,res)=>{
         req.flash("error","Listing you are looking for does not exist");
         return res.redirect("/listings");
     }
+    if(listing.status==false){
+        req.flash("error","Bookings are suspended for this listing");
+        return res.redirect(`/listings/${id}`);
+    }
     res.render("listings/book.ejs",{listing});
 }
 
@@ -98,6 +102,10 @@ module.exports.bookListing=async (req,res)=>{
     let {from,to,paymentId,orderId}=req.body;
     const booking={userid:req.user._id,from,to,paymentId,orderId};
     const listing=await Listing.findById(id);
+    if(listing.status==false){
+        req.flash("error","Told not accepting booking");
+        return res.redirect(`/listings/${id}`);
+    }
     listing.bookings.push(booking);
     const bookedListing=await listing.save();
     if(bookedListing){
@@ -121,8 +129,29 @@ module.exports.destroyBooking=async (req,res)=>{
     res.redirect("/user/bookings");
 }
 
+module.exports.changeStatus = async (req, res) => {
+    let { id } = req.params;
+    let {page}=req.query;
+    const listing = await Listing.findByIdAndUpdate(
+        id,
+        [{ $set: { status: { $not: "$status" } } }],
+        { new: true }
+    );
+    if (!listing) {
+        req.flash("error", "Listing you are looking for does not exist");
+        return res.redirect("/user/listings");
+    }
+    req.flash("success", "Status Updated");
+    res.redirect(`/user/listings?page=${page}`);
+};
+
 module.exports.destroyListing=async (req,res)=>{
     let {id}=req.params;
+    const listing=await Listing.findById(id);
+    if(listing && listing.bookings.length>0){
+        req.flash("error","There are visitors contact them and first suspend status");
+        return res.redirect("/user/customers");
+    }
     const deletedItem=await Listing.findByIdAndDelete(id);
     if(deletedItem)
         req.flash("success","Listing Deleted Successfully!");

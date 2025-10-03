@@ -2,6 +2,7 @@
   <script>
     const listing=<%-JSON.stringify(listing)%>;
   </script>
+  <div class="container">
   <div class="row mt-4">
     <div class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2 ">
       <h2>Edit Your Listing</h2>
@@ -164,6 +165,7 @@
         <button class="btn edit-btn">Confirm Edit</button>
       </form>
     </div>
+  </div>
   </div>
 <script>
   let category=document.querySelectorAll('input[name="category[]"]');

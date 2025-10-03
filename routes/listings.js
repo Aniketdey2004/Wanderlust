@@ -30,4 +30,5 @@ router.route("/:id/book")
 .post(isLoggedIn,verifyPayment,wrapAsync(listingController.bookListing))
 .delete(isLoggedIn,wrapAsync(listingController.destroyBooking));
 
+router.put("/:id/status",isLoggedIn,isOwner,wrapAsync(listingController.changeStatus));
 module.exports=router;

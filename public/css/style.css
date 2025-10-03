@@ -376,7 +376,11 @@ a {
   border-top-left-radius: 1.5rem;
   border-top-right-radius: 1.5rem;
 }
-
+.own-listing-btns{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
 /* own reviews */
 .review-buttons{
   display: flex;
@@ -474,6 +478,3 @@ a {
     text-decoration: underline;
   }
 
-.about-section span{
-  
-}

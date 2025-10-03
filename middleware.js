@@ -111,3 +111,13 @@ module.exports.verifyPayment=(req, res,next) => {
     res.status(400).send("Invalid signature");
   }
 }
+
+module.exports.removeExpires=async (req,res,next)=>{
+    const listings=await Listing.find({});
+    for(listing of listings){
+        const id=listing.bookings.filter(b=>b.to.getTime()<Date.now()).map(b=>b._id);
+        if(id.length>0)
+        await Listing.findByIdAndUpdate(listing._id,{$pull:{bookings:{_id:{$in:id}}}});
+    }
+    next();
+}

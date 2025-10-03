@@ -52,12 +52,21 @@
           <p class="fs-4 fw-bold">
             ₹ <%=listing.price.toLocaleString('en-IN')%> / night
           </p>
+          <%if(listing.status===true){%>
           <a
             href="/listings/<%=listing._id%>/book"
             class="btn form-btn w-100 py-2"
           >
             Book Place
           </a>
+          <%}else{%>
+            <a
+            href="#"
+            class="btn form-btn w-100 py-2"
+          >
+            Booking Suspended
+          </a>
+          <%}%>
         </div>
       </div>
     </div>

@@ -56,63 +56,69 @@
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
-    let listing=<%-JSON.stringify(listing)%>;
-      let form = document.querySelector('.book-form');
+let listing = <%- JSON.stringify(listing) %>;
+let form = document.querySelector('.book-form');
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const from = document.getElementById('from').value;
-    const to = document.getElementById('to').value;
-    if(from && to){
-      const response = await fetch('/payment/createBooking', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ amount: listing.price })
-    });
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const from = document.getElementById('from').value;
+  const to = document.getElementById('to').value;
 
-    if (!response.ok) {
-      alert("Error creating payment order.");
-      window.location.href = `/listings/<%= listing._id %>`;
-      return;
-    }
+  if (!from || !to) {
+    alert("Please select both dates.");
+    return;
+  }
 
-    const order = await response.json();
+  const date1 = new Date(from);
+  const date2 = new Date(to);
+  const diffMs = date2 - date1;
+  const diffDays = diffMs / (1000 * 60 * 60 * 24);
 
-    const options = {
-      key: "<%= process.env.RAZORPAY_KEY %>",
-      amount: order.amount,
-      currency: order.currency,
-      name: "Wanderlust",
-      description: "Booking Payment",
-      order_id: order.id,
-      handler: async function (response) {
-        const from = document.getElementById('from').value;
-        const to = document.getElementById('to').value;
+  if (diffDays < 0) {
+    alert("The 'From' date must be before or equal to the 'To' date.");
+    return;
+  }
+  const totalAmount = listing.price * (diffDays + 1);
 
-        const res = await fetch(`/listings/<%= listing._id %>/book`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            from,
-            to,
-            paymentId: response.razorpay_payment_id,
-            orderId: response.razorpay_order_id,
-            signature: response.razorpay_signature
-          })
-        });
-
-        if (res.ok) {
-          // alert("Booking and payment successful!");
-          window.location.href = `/listings/<%= listing._id %>`;
-        } else {
-          // alert("Booking failed. Please contact support");
-          window.location.href = `/listings/<%= listing._id %>`;
-        }
-      }
-    };
-
-    const rzp = new Razorpay(options);
-    rzp.open();
-    }
+  const response = await fetch('/payment/createBooking', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ amount: totalAmount })
   });
+
+  if (!response.ok) {
+    alert("Error creating payment order.");
+    window.location.href = `/listings/<%= listing._id %>`;
+    return;
+  }
+
+  const order = await response.json();
+
+  const options = {
+    key: "<%= process.env.RAZORPAY_KEY %>",
+    amount: order.amount,
+    currency: order.currency,
+    name: "Wanderlust",
+    description: "Booking Payment",
+    order_id: order.id,
+    handler: async function (response) {
+      const res = await fetch(`/listings/<%= listing._id %>/book`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          from,
+          to,
+          paymentId: response.razorpay_payment_id,
+          orderId: response.razorpay_order_id,
+          signature: response.razorpay_signature
+        })
+      });
+
+      window.location.href = `/listings/<%= listing._id %>`;
+    }
+  };
+
+  const rzp = new Razorpay(options);
+  rzp.open();
+});
 </script>
