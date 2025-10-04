@@ -25,9 +25,9 @@ router.get("/user/listings",isLoggedIn,wrapAsync(userController.getListings));
 
 router.get("/user/reviews",isLoggedIn,wrapAsync(userController.getReviews));
 
-router.get("/user/bookings",isLoggedIn,removeExpires,wrapAsync(userController.getBookings));
+router.get("/user/bookings",isLoggedIn,wrapAsync(userController.getBookings));
 
-router.get("/user/customers",isLoggedIn,removeExpires,wrapAsync(userController.getCustomers));
+router.get("/user/customers",isLoggedIn,wrapAsync(userController.getCustomers));
 
 router.get("/user/:id",wrapAsync(userController.findUser));
 

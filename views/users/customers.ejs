@@ -5,15 +5,15 @@
   <%for(booking of bookings){%>
   <div class="col mb-3">
     <div class="card book-card h-100">
-      <img src="<%= booking.image %>" class="card-img-top book-img" alt="..." />
+      <img src="<%= booking.listing.image.url %>" class="card-img-top book-img" alt="..." />
       <div class="card-body">
-        <h5 class="card-title"><%=booking.title%></h5>
+        <h5 class="card-title"><%=booking.listing.title%></h5>
         <p class="card-text"><b>From:</b><%=booking.from.toLocaleDateString()%></p>
         <p class="card-text"><b>To:</b><%=booking.to.toLocaleDateString()%></p>
-        <a href="/listings/<%=booking.id%>" class="btn seelisting me-2"
+        <a href="/listings/<%=booking.listing._id%>" class="btn seelisting me-2"
           >See Listing</a
         >
-        <a href="/user/<%=booking.userid%>" class="btn visitor"
+        <a href="/user/<%=booking.customer%>" class="btn visitor"
           >See Visitor</a
         >
       </div>

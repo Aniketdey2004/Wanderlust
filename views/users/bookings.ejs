@@ -5,16 +5,16 @@
   <% for (booking of bookings) { %>
   <div class="col mb-4">
     <div class="card book-card h-100">
-      <img src="<%= booking.image %>" class="card-img-top book-img" alt="..." />
+      <img src="<%= booking.listing.image.url %>" class="card-img-top book-img" alt="..." />
       <div class="card-body">
-        <h5 class="card-title"><%= booking.title %></h5>
+        <h5 class="card-title"><%= booking.listing.title %></h5>
         <p class="card-text"><b>From:</b> <%= booking.from.toLocaleDateString() %></p>
         <p class="card-text"><b>To:</b> <%= booking.to.toLocaleDateString() %></p>
         <div class="booking-btns">
-          <form action="/listings/<%=booking._id%>/book?_method=DELETE" method="post">
+          <form action="/listings/<%=booking.listing._id%>/book/<%=booking._id%>?_method=DELETE" method="post">
             <button class="btn del-btn">Cancel Booking</button>
           </form>
-          <a href="/listings/<%= booking._id %>" class="btn seelisting"
+          <a href="/listings/<%= booking.listing._id %>" class="btn seelisting"
             >See Listing</a
           >
         </div>

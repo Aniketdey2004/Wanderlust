@@ -1,7 +1,7 @@
 const express=require('express');
 const router=express.Router();
 const wrapAsync=require('./../utils/wrapAsync');
-const {isLoggedIn,isOwner,validateListing,validateUpdate,verifyPayment}=require('../middleware.js');
+const {isLoggedIn,isOwner,validateListing,validateUpdate}=require('../middleware.js');
 const listingController=require('../controllers/listing.js');
 const multer  = require('multer');
 const {storage}=require('../cloudConfig.js');
@@ -25,10 +25,6 @@ router.route("/:id")
 .put(isLoggedIn,isOwner,upload.single('image'),validateUpdate,wrapAsync(listingController.updateListing))
 .delete(isLoggedIn,isOwner,wrapAsync(listingController.destroyListing));
 
-router.route("/:id/book")
-.get(isLoggedIn,wrapAsync(listingController.renderbookListing))
-.post(isLoggedIn,verifyPayment,wrapAsync(listingController.bookListing))
-.delete(isLoggedIn,wrapAsync(listingController.destroyBooking));
 
 router.put("/:id/status",isLoggedIn,isOwner,wrapAsync(listingController.changeStatus));
 module.exports=router;

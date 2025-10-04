@@ -23,6 +23,7 @@ const listingRouter=require('./routes/listings.js');
 const reviewRouter=require('./routes/reviews.js');
 const userRouter=require('./routes/user.js');
 const paymentRouter=require('./routes/payment.js');
+const bookRouter=require('./routes/book.js');
 
 // const MONGO_URL= 'mongodb://localhost:27017/wanderlust';
 const DB_URL=process.env.ATLAS_DB;
@@ -103,6 +104,9 @@ app.use("/listings/:id/reviews",reviewRouter);
 
 //user routes
 app.use("/",userRouter);
+
+//book router
+app.use("/listings/:id/book",bookRouter);
 
 //payment router
 app.use("/payment",paymentRouter);

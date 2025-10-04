@@ -1,6 +1,7 @@
 const User=require('../models/user.js');
 const Listing = require("../models/listing.js");
 const Review = require("../models/review.js");
+const Book=require('../models/book.js');
 
 module.exports.renderSignupForm = (req, res) => {
   res.render("users/signup.ejs");
@@ -71,46 +72,20 @@ module.exports.getReviews = async (req, res) => {
 };
 
 module.exports.getBookings = async (req, res) => {
-  const bookings = [];
-  const listings = await Listing.find({});
-  for (let listing of listings) {
-    for (let books of listing.bookings) {
-      if (books.userid.equals(req.user._id)) {
-        bookings.push({
-          _id: listing._id,
-          image:listing.image.url,
-          title: listing.title,
-          from: books.from,
-          to: books.to,
-        });
-        break;
-      }
-    }
-  }
-  const totalBookings=bookings.length;
+  const totalBookings=await Book.countDocuments({customer:req.user._id});
   const perPage=9;
   const page=parseInt(req.query.page)|| 1;
-  const books=bookings.slice(perPage*(page-1),perPage*(page-1)+9);
-  res.render("users/bookings.ejs", { bookings:books,currentPage:page,totalPages:Math.ceil(totalBookings/perPage)});
+  const bookings = await Book.find({customer:req.user._id}).populate("listing").skip(perPage*(page-1)).limit(perPage);
+  res.render("users/bookings.ejs", { bookings:bookings,currentPage:page,totalPages:Math.ceil(totalBookings/perPage)});
 };
 
 module.exports.getCustomers = async (req, res) => {
-  const listings = await Listing.find({ owner: req.user._id });
-  const bookings = [];
-  for (let listing of listings) {
-    for (let booking of listing.bookings) {
-      bookings.push({
-        ...booking.toObject(),
-        title: listing.title,
-        id: listing._id,
-        image:listing.image.url
-      });
-    }
-  }
-  const totalCustomers=bookings.length;
+  const userListings = await Listing.find({ owner: req.user._id });
+  const listingIds = userListings.map(l => l._id);
+  const totalCustomers=await Book.countDocuments({listing:{$in:listingIds}});
   const perPage=9;
   const page=parseInt(req.query.page)|| 1;
-  const customers=bookings.slice(perPage*(page-1),perPage*(page-1)+9);
+  const customers=await Book.find({listing:{$in:listingIds}}).populate("listing").skip(perPage*(page-1)).limit(perPage)
   res.render("users/customers.ejs", { bookings:customers,currentPage:page,totalPages:Math.ceil(totalCustomers/perPage) });
 };
 

@@ -43,14 +43,8 @@ const listingSchema = new Schema({
   ],
   bookings: [
     {
-      userid: {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-      },
-      from: { type: Date },
-      to: { type: Date },
-      paymentId: { type: String },
-      orderId: { type: String },
+      type:Schema.Types.ObjectId,
+      ref:"Book"
     },
   ],
   geometry: {
