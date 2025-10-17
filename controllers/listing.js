@@ -23,8 +23,9 @@ module.exports.renderNewForm=async (req,res)=>{
 }
 
 module.exports.createListing=async (req,res)=>{
+    let completeAddress=req.body.location+", "+req.body.country;
     const response=await geocodingClient.forwardGeocode({
-        query: req.body.location,
+        query: completeAddress,
         limit: 1
     })
     .send();
@@ -68,6 +69,14 @@ module.exports.updateListing=async (req,res)=>{
     let {id}=req.params;
     const updatedItem=req.body;
     const updatedListing=await Listing.findByIdAndUpdate(id,{...updatedItem});
+    let completeAddress=req.body.location+", "+req.body.country;
+    const response=await geocodingClient.forwardGeocode({
+        query: completeAddress,
+        limit: 1
+    })
+    .send();
+    updatedListing.geometry=response.body.features[0].geometry;
+    updatedListing.save();
     if(req.file)
     {
         let url=req.file.path;

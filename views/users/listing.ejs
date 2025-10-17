@@ -11,7 +11,13 @@
           <p class="card-text text-muted mb-2"><%=listing.description%></p>
           <div class="own-listing-btns">
             <form action="/listings/<%=listing._id%>/status?page=<%=currentPage%>&_method=PUT" method="post">
-              <button class="btn del-btn">Change Status</button>
+              <button class="btn del-btn">
+                <%if(listing.status==true){%>
+                  Pause Booking
+                <%}else{%>
+                  Resume Booking
+                <%}%>
+              </button>
             </form>
             <a href="/listings/<%= listing._id %>" class="btn seelisting">See Listing</a>
           </div>

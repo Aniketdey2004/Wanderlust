@@ -27,13 +27,25 @@ Discover, book, and host unique stays around the world.
 ## 🛠️ Tech Stack
 
 - **Backend:** Node.js, Express.js, MongoDB, Mongoose
-- **Frontend:** EJS, Bootstrap 5, Custom CSS
+- **Frontend:** EJS, Bootstrap 5, vanilla CSS, Js, HTML
 - **Authentication:** Passport.js, Passport-Local-Mongoose
 - **File Uploads:** Multer, Cloudinary, multer-storage-cloudinary
 - **Payments:** Razorpay (test mode)
 - **Maps:** Mapbox SDK
 - **Session Store:** connect-mongo
 - **Validation:** Joi
+
+---
+
+## 💡 Usage
+
+- **Sign up** as a new user.
+- **Host** a property by adding a new listing with images and details.
+- **Browse** listings, filter by category, and use the map to explore locations.
+- **Book** a stay and pay securely via Razorpay (test mode).
+- **Leave reviews** and ratings for properties you’ve stayed at.
+- **Manage** your bookings and hosted listings from your profile.
+
 
 ---
 
@@ -77,29 +89,12 @@ Discover, book, and host unique stays around the world.
 
 ---
 
-## 💡 Usage
-
-- **Sign up** as a new user.
-- **Host** a property by adding a new listing with images and details.
-- **Browse** listings, filter by category, and use the map to explore locations.
-- **Book** a stay and pay securely via Razorpay (test mode).
-- **Leave reviews** and ratings for properties you’ve stayed at.
-- **Manage** your bookings and hosted listings from your profile.
-
----
-
 ## 👤 Author
 
 **Aniket Dey**
 
 - [GitHub](https://github.com/Aniketdey2004/Wanderlust)
 - [LinkedIn](https://www.linkedin.com/in/aniket-dey-297953278)
-
----
-
-## 📝 License
-
-This project is licensed under the MIT License.
 
 ---
 
